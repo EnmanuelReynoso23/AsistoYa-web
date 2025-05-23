@@ -1,37 +1,43 @@
 import React from 'react';
-import { Clock, Users, BarChart as ChartBar, Zap, DollarSign, Shield } from 'lucide-react';
+import { Clock, Users, BarChart as ChartBar, Zap, DollarSign, Shield, CheckCircle, TrendingUp } from 'lucide-react';
 import AdminDashboard from '../components/AdminDashboard';
 
 const benefits = [
   {
-    title: 'Ahorro de Tiempo',
-    description: 'Elimine el pase de lista manual. Los docentes pueden dedicar hasta 15 minutos más por día a la enseñanza, lo que equivale a más de 45 horas al año.',
-    icon: <Clock className="h-8 w-8 text-blue-500" />
+    title: 'Ahorro de Tiempo Significativo',
+    description: 'Elimine el pase de lista manual. Los docentes ahorran hasta 15 minutos por día, equivalente a más de 45 horas lectivas al año que pueden dedicar a la enseñanza.',
+    icon: <Clock className="h-8 w-8 text-blue-500" />,
+    stats: '45+ horas/año'
   },
   {
-    title: 'Registro Preciso',
-    description: 'Evite errores humanos en el registro de asistencia y mantenga un historial detallado y exacto de cada estudiante.',
-    icon: <Users className="h-8 w-8 text-blue-500" />
+    title: 'Precisión Garantizada',
+    description: 'Sistema de reconocimiento facial con 99.9% de precisión. Elimine errores humanos y mantenga un registro exacto y auditable de la asistencia de cada estudiante.',
+    icon: <CheckCircle className="h-8 w-8 text-blue-500" />,
+    stats: '99.9% precisión'
   },
   {
-    title: 'Análisis de Datos',
-    description: 'Obtenga reportes detallados y estadísticas que le permiten identificar patrones de ausentismo y tomar medidas preventivas.',
-    icon: <ChartBar className="h-8 w-8 text-blue-500" />
+    title: 'Análisis Predictivo',
+    description: 'Identifique patrones de ausentismo antes de que se conviertan en problemas. Nuestro sistema de IA detecta tendencias y envía alertas tempranas.',
+    icon: <TrendingUp className="h-8 w-8 text-blue-500" />,
+    stats: '-40% ausentismo'
   },
   {
-    title: 'Eficiencia Administrativa',
-    description: 'Automatice procesos administrativos y reduzca la carga de trabajo del personal escolar con un sistema que funciona sin intervención humana.',
-    icon: <Zap className="h-8 w-8 text-blue-500" />
+    title: 'Automatización Inteligente',
+    description: 'Reduzca la carga administrativa con un sistema que funciona 24/7. Genere reportes automáticos y envíe notificaciones sin intervención humana.',
+    icon: <Zap className="h-8 w-8 text-blue-500" />,
+    stats: '100% automático'
   },
   {
-    title: 'Retorno de Inversión',
-    description: 'Reduzca costos operativos a largo plazo y mejore la satisfacción de padres y estudiantes, lo que puede aumentar la retención y atraer nuevos alumnos.',
-    icon: <DollarSign className="h-8 w-8 text-blue-500" />
+    title: 'ROI Comprobado',
+    description: 'Reduzca costos operativos hasta en un 30%. Mejore la satisfacción de padres y estudiantes, aumentando la retención y atrayendo nuevos alumnos.',
+    icon: <DollarSign className="h-8 w-8 text-blue-500" />,
+    stats: '30% ahorro'
   },
   {
-    title: 'Seguridad Escolar',
-    description: 'Mejore la seguridad del campus al tener un registro preciso de quién está presente en todo momento, crucial en situaciones de emergencia.',
-    icon: <Shield className="h-8 w-8 text-blue-500" />
+    title: 'Seguridad Avanzada',
+    description: 'Control de acceso biométrico que garantiza que solo personas autorizadas ingresen al campus. Registro en tiempo real de presencia para emergencias.',
+    icon: <Shield className="h-8 w-8 text-blue-500" />,
+    stats: '100% seguro'
   }
 ];
 
@@ -89,15 +95,23 @@ const ForSchoolsPage = () => {
         </div>
 
         <div className="mb-20">
-          <h2 className="text-3xl font-bold text-gray-900 mb-12 text-center">Beneficios para su Institución</h2>
+          <div className="text-center max-w-3xl mx-auto mb-16">
+            <h2 className="text-3xl font-bold text-gray-900 mb-4">Beneficios para su Institución</h2>
+            <p className="text-xl text-gray-600">
+              Descubra cómo AsistoYA transforma la gestión escolar con beneficios tangibles y medibles
+            </p>
+          </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {benefits.map((benefit, index) => (
               <div 
                 key={index} 
-                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300 border border-gray-100"
+                className="bg-white p-8 rounded-xl shadow-lg hover:shadow-xl transition-all duration-300 border border-gray-100 transform hover:-translate-y-1"
               >
-                <div className="bg-blue-50 rounded-2xl p-4 inline-block mb-6">
-                  {benefit.icon}
+                <div className="flex items-center justify-between mb-6">
+                  <div className="bg-blue-50 rounded-2xl p-4">
+                    {benefit.icon}
+                  </div>
+                  <span className="text-lg font-bold text-blue-600">{benefit.stats}</span>
                 </div>
                 <h3 className="text-xl font-bold text-gray-900 mb-4">{benefit.title}</h3>
                 <p className="text-gray-600 leading-relaxed">{benefit.description}</p>
