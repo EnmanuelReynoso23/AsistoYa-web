@@ -15,7 +15,8 @@ const FaceRecognitionDemo = () => {
   useEffect(() => {
     const loadModels = async () => {
       try {
-        const MODEL_URL = '/models';
+        // Use CDN for face-api.js models for faster loading
+        const MODEL_URL = 'https://raw.githubusercontent.com/justadudewhohacks/face-api.js/master/weights';
         
         await Promise.all([
           faceapi.nets.ssdMobilenetv1.load(MODEL_URL),
