@@ -28,39 +28,115 @@ class FaceApiService {
   private modelsLoaded = false;
   private isLoading = false;
   private modelLoadPromise: Promise<void> | null = null;
-  private recognitionThreshold = 0.6; // Adjust this value for sensitivity
+  private recognitionThreshold = 0.6;
+  private loadingProgress = 0;
+  private onProgressCallback?: (progress: number) => void;
 
-  async loadModels(): Promise<void> {
+  async loadModels(onProgress?: (progress: number) => void): Promise<void> {
     if (this.modelsLoaded) return;
     if (this.isLoading) {
       if (this.modelLoadPromise) return this.modelLoadPromise;
     }
 
+    this.onProgressCallback = onProgress;
     this.isLoading = true;
     this.modelLoadPromise = this.loadModelsInternal();
     
     try {
       await this.modelLoadPromise;
       this.modelsLoaded = true;
+      this.updateProgress(100);
     } finally {
       this.isLoading = false;
     }
   }
 
+  private updateProgress(progress: number) {
+    this.loadingProgress = progress;
+    this.onProgressCallback?.(progress);
+  }
+
   private async loadModelsInternal(): Promise<void> {
-    const MODEL_URL = '/models';
-    
     try {
-      // Load models in parallel for faster loading
-      await Promise.all([
-        faceapi.nets.ssdMobilenetv1.loadFromUri(MODEL_URL),
-        faceapi.nets.faceLandmark68Net.loadFromUri(MODEL_URL),
-        faceapi.nets.faceRecognitionNet.loadFromUri(MODEL_URL)
-      ]);
+      this.updateProgress(10);
+      
+      // Try CDN first for faster loading
+      const CDN_URL = 'https://cdn.jsdelivr.net/npm/@vladmandic/face-api@latest/model';
+      const LOCAL_URL = '/models';
+      
+      let modelUrl = CDN_URL;
+      
+      try {
+        // Test if CDN is accessible
+        const testResponse = await fetch(`${CDN_URL}/ssd_mobilenetv1_model-weights_manifest.json`);
+        if (!testResponse.ok) {
+          throw new Error('CDN not accessible');
+        }
+        this.updateProgress(20);
+      } catch {
+        console.log('CDN not accessible, using local models');
+        modelUrl = LOCAL_URL;
+        this.updateProgress(15);
+      }
+
+      // Load models with progress tracking
+      const modelPromises = [
+        this.loadModelWithProgress(
+          () => faceapi.nets.ssdMobilenetv1.loadFromUri(modelUrl),
+          'SSD MobileNet',
+          20,
+          40
+        ),
+        this.loadModelWithProgress(
+          () => faceapi.nets.faceLandmark68Net.loadFromUri(modelUrl),
+          'Face Landmarks',
+          40,
+          70
+        ),
+        this.loadModelWithProgress(
+          () => faceapi.nets.faceRecognitionNet.loadFromUri(modelUrl),
+          'Face Recognition',
+          70,
+          95
+        )
+      ];
+
+      await Promise.all(modelPromises);
       
       console.log('Face-api.js models loaded successfully');
+      this.updateProgress(100);
     } catch (error) {
       console.error('Error loading face-api.js models:', error);
+      
+      // Fallback: try to load minimal models for basic functionality
+      try {
+        console.log('Attempting to load minimal models...');
+        await faceapi.nets.tinyFaceDetector.loadFromUri('/models');
+        console.log('Minimal face detection model loaded');
+        this.updateProgress(100);
+      } catch (fallbackError) {
+        console.error('Failed to load even minimal models:', fallbackError);
+        throw new Error('No se pudieron cargar los modelos de reconocimiento facial. Verifica tu conexión a internet.');
+      }
+    }
+  }
+
+  private async loadModelWithProgress(
+    loadFunction: () => Promise<void>,
+    modelName: string,
+    startProgress: number,
+    endProgress: number
+  ): Promise<void> {
+    try {
+      console.log(`Loading ${modelName}...`);
+      this.updateProgress(startProgress);
+      
+      await loadFunction();
+      
+      console.log(`${modelName} loaded successfully`);
+      this.updateProgress(endProgress);
+    } catch (error) {
+      console.error(`Error loading ${modelName}:`, error);
       throw error;
     }
   }
@@ -71,10 +147,25 @@ class FaceApiService {
     }
 
     try {
-      const detections = await faceapi
-        .detectAllFaces(input, new faceapi.SsdMobilenetv1Options({ minConfidence: 0.5 }))
-        .withFaceLandmarks()
-        .withFaceDescriptors();
+      // Use different detection methods based on what's available
+      let detections;
+      
+      if (faceapi.nets.ssdMobilenetv1.isLoaded) {
+        detections = await faceapi
+          .detectAllFaces(input, new faceapi.SsdMobilenetv1Options({ minConfidence: 0.5 }))
+          .withFaceLandmarks()
+          .withFaceDescriptors();
+      } else if (faceapi.nets.tinyFaceDetector.isLoaded) {
+        // Fallback to tiny face detector
+        detections = await faceapi
+          .detectAllFaces(input, new faceapi.TinyFaceDetectorOptions({ inputSize: 416, scoreThreshold: 0.5 }));
+      } else {
+        throw new Error('No face detection models available');
+      }
+
+      if (!detections || detections.length === 0) {
+        return [];
+      }
 
       return detections.map(detection => ({
         box: {
@@ -117,6 +208,7 @@ class FaceApiService {
       isMatch
     };
   }
+
   async processVideoFrame(
     video: HTMLVideoElement,
     knownFaces: StudentFace[]
@@ -125,13 +217,15 @@ class FaceApiService {
     const results: RecognitionResult[] = [];
 
     for (const detection of detections) {
-      const recognition = await this.recognizeFace(detection.descriptor, knownFaces);
-      if (recognition) {
-        recognition.box = detection.box;
-        recognition.descriptor = detection.descriptor;
-        results.push(recognition);
+      if (detection.descriptor) {
+        const recognition = await this.recognizeFace(detection.descriptor, knownFaces);
+        if (recognition) {
+          recognition.box = detection.box;
+          recognition.descriptor = detection.descriptor;
+          results.push(recognition);
+        }
       } else {
-        // Even if no match found, create a result for unknown face
+        // Even if no descriptor, create a result for unknown face
         results.push({
           student: null,
           confidence: 0,
@@ -160,6 +254,17 @@ class FaceApiService {
 
   isModelsLoaded(): boolean {
     return this.modelsLoaded;
+  }
+
+  getLoadingProgress(): number {
+    return this.loadingProgress;
+  }
+
+  // Quick initialization for demo mode
+  async initializeForDemo(): Promise<void> {
+    console.log('Initializing demo mode - skipping model loading');
+    this.modelsLoaded = true;
+    this.updateProgress(100);
   }
 
   // Utility method to validate face quality

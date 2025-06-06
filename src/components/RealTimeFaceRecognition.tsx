@@ -1,6 +1,6 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Webcam from 'react-webcam';
-import { CheckCircle, UserPlus, Users, Settings, Download } from 'lucide-react';
+import { CheckCircle, UserPlus, Users, Settings, Download, Loader, AlertTriangle, Wifi, WifiOff } from 'lucide-react';
 import { faceApiService, StudentFace, RecognitionResult } from '../services/faceApiService';
 import { studentDatabase } from '../services/studentDatabase';
 
@@ -22,6 +22,8 @@ const RealTimeFaceRecognition: React.FC = () => {
   const [isActive, setIsActive] = useState(false);
   const [modelsLoaded, setModelsLoaded] = useState(false);
   const [modelError, setModelError] = useState<string | null>(null);
+  const [loadingProgress, setLoadingProgress] = useState(0);
+  const [isLoadingModels, setIsLoadingModels] = useState(false);
   const [recognizedStudents, setRecognizedStudents] = useState<RecognizedStudent[]>([]);
   const [unknownFaces, setUnknownFaces] = useState<UnknownFace[]>([]);
   const [knownStudents, setKnownStudents] = useState<StudentFace[]>([]);
@@ -32,6 +34,7 @@ const RealTimeFaceRecognition: React.FC = () => {
   const [registrationError, setRegistrationError] = useState<string | null>(null);
   const [threshold, setThreshold] = useState(0.6);
   const [notificationsSent, setNotificationsSent] = useState(false);
+  const [connectionStatus, setConnectionStatus] = useState<'online' | 'offline'>('online');
 
   const webcamRef = useRef<Webcam | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -45,29 +48,66 @@ const RealTimeFaceRecognition: React.FC = () => {
     width: 1280,
     height: 720,
     facingMode: "user",
-    frameRate: { ideal: 60, max: 60 }
+    frameRate: { ideal: 30, max: 60 }
   };
+
+  // Check connection status
+  useEffect(() => {
+    const updateConnectionStatus = () => {
+      setConnectionStatus(navigator.onLine ? 'online' : 'offline');
+    };
+
+    window.addEventListener('online', updateConnectionStatus);
+    window.addEventListener('offline', updateConnectionStatus);
+    updateConnectionStatus();
+
+    return () => {
+      window.removeEventListener('online', updateConnectionStatus);
+      window.removeEventListener('offline', updateConnectionStatus);
+    };
+  }, []);
 
   // Load models and students on component mount
   useEffect(() => {
     const initializeSystem = async () => {
+      setIsLoadingModels(true);
       try {
-        await faceApiService.loadModels();
-        setModelsLoaded(true);
-        
+        // Initialize database first
         await studentDatabase.init();
         const students = await studentDatabase.getAllStudents();
         setKnownStudents(students);
         
+        // Load models with progress tracking
+        await faceApiService.loadModels((progress) => {
+          setLoadingProgress(progress);
+        });
+        
+        setModelsLoaded(true);
         faceApiService.setRecognitionThreshold(threshold);
+        setModelError(null);
       } catch (error) {
         console.error('Error initializing system:', error);
-        setModelError('Error al inicializar el sistema de reconocimiento facial');
+        setModelError(
+          connectionStatus === 'offline' 
+            ? 'Sin conexión a internet. Algunas funciones pueden estar limitadas.'
+            : 'Error al cargar los modelos de reconocimiento facial. Reintentando...'
+        );
+        
+        // Retry after 3 seconds if online
+        if (connectionStatus === 'online') {
+          setTimeout(() => {
+            setModelError(null);
+            setLoadingProgress(0);
+            initializeSystem();
+          }, 3000);
+        }
+      } finally {
+        setIsLoadingModels(false);
       }
     };
 
     initializeSystem();
-  }, [threshold]);
+  }, [threshold, connectionStatus]);
 
   // Main processing loop for real-time recognition
   const processFrame = useCallback(async () => {
@@ -83,8 +123,8 @@ const RealTimeFaceRecognition: React.FC = () => {
     const currentTime = performance.now();
     const timeSinceLastProcess = currentTime - lastProcessTimeRef.current;
 
-    // Process every 3rd frame (~20fps actual processing)
-    if (timeSinceLastProcess < 50) { // 50ms = 20fps
+    // Process every 3rd frame (~20fps actual processing) for better performance
+    if (timeSinceLastProcess < 150) { // 150ms = ~6.7fps
       animationFrameRef.current = requestAnimationFrame(processFrame);
       return;
     }
@@ -109,6 +149,7 @@ const RealTimeFaceRecognition: React.FC = () => {
 
     animationFrameRef.current = requestAnimationFrame(processFrame);
   }, [isActive, modelsLoaded, knownStudents]);
+
   // Draw bounding boxes and names on canvas overlay
   const drawOverlays = (results: RecognitionResult[]) => {
     const canvas = canvasRef.current;
@@ -248,6 +289,10 @@ const RealTimeFaceRecognition: React.FC = () => {
       }
       setRecognizedStudents([]);
     } else {
+      if (!modelsLoaded) {
+        setModelError('Los modelos aún se están cargando. Por favor espera...');
+        return;
+      }
       setIsActive(true);
       lastProcessTimeRef.current = performance.now();
       processFrame();
@@ -346,6 +391,7 @@ const RealTimeFaceRecognition: React.FC = () => {
       setRegistrationError('Error al registrar estudiante');
     }
   };
+
   // Send notifications to parents app
   const sendNotificationsToParents = () => {
     if (recognizedStudents.length === 0) {
@@ -396,18 +442,87 @@ const RealTimeFaceRecognition: React.FC = () => {
     }
   };
 
+  // Loading screen
+  if (isLoadingModels || (!modelsLoaded && !modelError)) {
+    return (
+      <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
+        <div className="text-center">
+          <div className="flex items-center justify-center mb-6">
+            <div className="relative">
+              <Loader className="h-12 w-12 text-blue-600 animate-spin" />
+              <div className="absolute inset-0 flex items-center justify-center">
+                <span className="text-xs font-bold text-blue-600">
+                  {Math.round(loadingProgress)}%
+                </span>
+              </div>
+            </div>
+          </div>
+          
+          <h3 className="text-xl font-semibold text-gray-900 mb-2">
+            Cargando Modelos de IA
+          </h3>
+          <p className="text-gray-600 mb-4">
+            Preparando el sistema de reconocimiento facial...
+          </p>
+          
+          <div className="w-full bg-gray-200 rounded-full h-3 mb-4">
+            <div
+              className="bg-blue-600 h-3 rounded-full transition-all duration-300"
+              style={{ width: `${loadingProgress}%` }}
+            />
+          </div>
+          
+          <div className="flex items-center justify-center text-sm text-gray-500">
+            {connectionStatus === 'online' ? (
+              <>
+                <Wifi className="h-4 w-4 mr-2 text-green-500" />
+                Conectado - Descargando modelos...
+              </>
+            ) : (
+              <>
+                <WifiOff className="h-4 w-4 mr-2 text-red-500" />
+                Sin conexión - Usando modelos locales...
+              </>
+            )}
+          </div>
+          
+          <p className="text-xs text-gray-400 mt-4">
+            Esto puede tomar unos momentos la primera vez
+          </p>
+        </div>
+      </div>
+    );
+  }
+
   if (modelError) {
     return (
       <div className="max-w-4xl mx-auto bg-white rounded-xl shadow-lg p-8">
-        <div className="text-center text-red-600">
-          <p className="text-lg font-semibold mb-2">Error del Sistema</p>
-          <p>{modelError}</p>
-          <button 
-            onClick={() => window.location.reload()} 
-            className="mt-4 px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
-          >
-            Recargar Página
-          </button>
+        <div className="text-center">
+          <AlertTriangle className="h-12 w-12 text-red-500 mx-auto mb-4" />
+          <h3 className="text-lg font-semibold text-red-800 mb-2">Error del Sistema</h3>
+          <p className="text-red-600 mb-4">{modelError}</p>
+          <div className="flex justify-center space-x-4">
+            <button 
+              onClick={() => {
+                setModelError(null);
+                setLoadingProgress(0);
+                window.location.reload();
+              }}
+              className="px-4 py-2 bg-blue-600 text-white rounded hover:bg-blue-700"
+            >
+              Reintentar
+            </button>
+            <button 
+              onClick={() => {
+                setModelError(null);
+                setModelsLoaded(true);
+                console.log('Using demo mode');
+              }}
+              className="px-4 py-2 bg-gray-600 text-white rounded hover:bg-gray-700"
+            >
+              Modo Demo
+            </button>
+          </div>
         </div>
       </div>
     );
@@ -431,6 +546,13 @@ const RealTimeFaceRecognition: React.FC = () => {
               <div className="text-sm opacity-90">Estudiantes</div>
               <div className="text-xl font-bold">{knownStudents.length}</div>
             </div>
+            <div className="flex items-center">
+              {connectionStatus === 'online' ? (
+                <Wifi className="h-5 w-5 text-green-300" />
+              ) : (
+                <WifiOff className="h-5 w-5 text-red-300" />
+              )}
+            </div>
           </div>
         </div>
       </div>
@@ -449,7 +571,9 @@ const RealTimeFaceRecognition: React.FC = () => {
               } ${!modelsLoaded ? 'opacity-50 cursor-not-allowed' : ''}`}
             >
               {isActive ? 'Detener Reconocimiento' : 'Iniciar Reconocimiento'}
-            </button>            <button
+            </button>
+
+            <button
               onClick={() => setShowRegistration(!showRegistration)}
               className="flex items-center px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700"
             >
@@ -503,7 +627,9 @@ const RealTimeFaceRecognition: React.FC = () => {
               Exportar
             </button>
           </div>
-        </div>        {/* Student Registration */}
+        </div>
+
+        {/* Student Registration */}
         {showRegistration && (
           <div className="mt-4 p-4 bg-white rounded-lg border">
             <h3 className="text-lg font-semibold mb-3">
@@ -562,7 +688,9 @@ const RealTimeFaceRecognition: React.FC = () => {
               videoConstraints={videoConstraints}
               className="w-full rounded-lg shadow-lg"
               style={{ maxHeight: '500px', objectFit: 'cover' }}
-            />            <canvas
+            />
+
+            <canvas
               ref={canvasRef}
               className="absolute top-0 left-0 w-full h-full cursor-pointer"
               style={{ maxHeight: '500px' }}
@@ -596,7 +724,8 @@ const RealTimeFaceRecognition: React.FC = () => {
               <div className="space-y-2">
                 {recognizedStudents.map((recognized, index) => (
                   <div key={`${recognized.student.id}-${index}`} className="bg-white p-3 rounded border">
-                    <div className="flex items-center justify-between">                      <div>
+                    <div className="flex items-center justify-between">
+                      <div>
                         <div className="font-medium text-green-800">{recognized.student.name}</div>
                         {recognized.student.code && (
                           <div className="text-xs text-blue-600 font-mono">
@@ -638,6 +767,12 @@ const RealTimeFaceRecognition: React.FC = () => {
               <div className="flex justify-between">
                 <span>Estudiantes:</span>
                 <span className="text-blue-600">{knownStudents.length}</span>
+              </div>
+              <div className="flex justify-between">
+                <span>Conexión:</span>
+                <span className={connectionStatus === 'online' ? 'text-green-600' : 'text-red-600'}>
+                  {connectionStatus === 'online' ? 'En línea' : 'Sin conexión'}
+                </span>
               </div>
             </div>
           </div>
