@@ -1,150 +1,121 @@
-import { useState } from 'react';
-import FaceRecognitionDemo from '../components/FaceRecognitionDemo';
-import RealTimeFaceRecognition from '../components/RealTimeFaceRecognition';
-import ParentAppDemo from '../components/ParentAppDemo';
-import AdminDashboard from '../components/AdminDashboard';
+import React from 'react';
+import { RealTimeFaceRecognition } from '../components/RealTimeFaceRecognition';
+import { Container } from '../components/Container';
+import { AnimatedPage } from '../components/AnimatedPage';
 
-const DemoPage = () => {
-  const [activeTab, setActiveTab] = useState('facial');
-  const [faceRecognitionMode, setFaceRecognitionMode] = useState('realtime');
-  
+export default function DemoPage() {
   return (
-    <div className="pt-16 bg-gray-50 min-h-screen">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="text-center mb-12">
-          <h1 className="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-            Demostración Interactiva
-          </h1>
-          <p className="mt-4 text-xl text-gray-500">
-            Experimenta las funcionalidades de AsistoYA para escuelas, padres y administradores.
-          </p>
-        </div>
-        
-        <div className="bg-white shadow rounded-lg overflow-hidden mb-8">
-          <div className="border-b border-gray-200">
-            <nav className="-mb-px flex" aria-label="Tabs">
-              <button
-                onClick={() => setActiveTab('facial')}
-                className={`${
-                  activeTab === 'facial'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm`}
-              >
-                Reconocimiento Facial
-              </button>
-              <button
-                onClick={() => setActiveTab('parent')}
-                className={`${
-                  activeTab === 'parent'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm`}
-              >
-                App para Padres
-              </button>
-              <button
-                onClick={() => setActiveTab('admin')}
-                className={`${
-                  activeTab === 'admin'
-                    ? 'border-blue-500 text-blue-600'
-                    : 'border-transparent text-gray-500 hover:text-gray-700 hover:border-gray-300'
-                } w-1/3 py-4 px-1 text-center border-b-2 font-medium text-sm`}
-              >
-                Panel de Administración
-              </button>
-            </nav>
-          </div>
-          
-          <div className="p-4">
-            {activeTab === 'facial' && (
-              <div className="flex flex-col items-center">
-                <p className="text-gray-600 mb-4 max-w-2xl text-center">
-                  Nuestra tecnología de reconocimiento facial identifica a los estudiantes al entrar a la escuela, registrando automáticamente su asistencia.
-                </p>
+    <AnimatedPage>
+      <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-indigo-50 py-12">
+        <Container>
+          <div className="max-w-4xl mx-auto">
+            {/* Header Section */}
+            <div className="text-center mb-12">
+              <h1 className="text-4xl md:text-5xl font-bold text-gray-900 mb-6">
+                Live Face Recognition Demo
+              </h1>
+              <p className="text-xl text-gray-600 max-w-3xl mx-auto leading-relaxed">
+                Experience our advanced face recognition technology in real-time. 
+                This demo showcases how AsistoYa identifies students instantly and accurately.
+              </p>
+            </div>
 
-                {/* Face Recognition Mode Toggle */}
-                <div className="mb-6 bg-gray-100 rounded-lg p-1">
-                  <button
-                    onClick={() => setFaceRecognitionMode('realtime')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                      faceRecognitionMode === 'realtime'
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : 'text-gray-700 hover:text-blue-600'
-                    }`}
-                  >
-                    🚀 Sistema Completo (60fps)
-                  </button>
-                  <button
-                    onClick={() => setFaceRecognitionMode('demo')}
-                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
-                      faceRecognitionMode === 'demo'
-                        ? 'bg-blue-600 text-white shadow-sm'
-                        : 'text-gray-700 hover:text-blue-600'
-                    }`}
-                  >
-                    👁️ Demo Básico
-                  </button>
+            {/* Demo Section */}
+            <div className="bg-white rounded-2xl shadow-xl border border-gray-100 overflow-hidden">
+              <div className="bg-gradient-to-r from-blue-600 to-indigo-600 px-8 py-6">
+                <h2 className="text-2xl font-semibold text-white mb-2">
+                  Real-Time Recognition
+                </h2>
+                <p className="text-blue-100">
+                  Allow camera access to see the face recognition system in action
+                </p>
+              </div>
+              
+              <div className="p-8">
+                <RealTimeFaceRecognition />
+              </div>
+            </div>
+
+            {/* Features Section */}
+            <div className="mt-16 grid md:grid-cols-3 gap-8">
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                <div className="w-12 h-12 bg-blue-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M13 10V3L4 14h7v7l9-11h-7z" />
+                  </svg>
                 </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Lightning Fast
+                </h3>
+                <p className="text-gray-600">
+                  Recognition happens in milliseconds, ensuring smooth attendance tracking
+                </p>
+              </div>
 
-                {faceRecognitionMode === 'realtime' ? (
-                  <div className="w-full">
-                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
-                      <h3 className="text-lg font-semibold text-blue-800 mb-2">🎯 Sistema de Reconocimiento Facial Completo</h3>
-                      <div className="text-sm text-blue-700 space-y-1">
-                        <p>✅ Reconocimiento facial real en tiempo real a 60fps</p>
-                        <p>✅ Registro y gestión de estudiantes con base de datos local</p>
-                        <p>✅ Detección múltiple de rostros simultáneos</p>
-                        <p>✅ Registro automático de asistencia</p>
-                        <p>✅ Configuración de sensibilidad ajustable</p>
-                        <p>✅ Exportación de datos y reportes</p>
-                      </div>
-                    </div>
-                    <RealTimeFaceRecognition />
-                  </div>
-                ) : (
-                  <div className="w-full">
-                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
-                      <h3 className="text-lg font-semibold text-yellow-800 mb-2">📋 Demo de Simulación</h3>
-                      <p className="text-sm text-yellow-700">
-                        Esta es una simulación que muestra la interfaz y flujo de trabajo del sistema sin usar reconocimiento facial real.
-                      </p>
-                    </div>
-                    <FaceRecognitionDemo />
-                  </div>
-                )}
-              </div>
-            )}
-            
-            {activeTab === 'parent' && (
-              <div className="flex flex-col items-center">
-                <p className="text-gray-600 mb-8 max-w-2xl text-center">
-                  Los padres reciben notificaciones en tiempo real sobre la llegada y salida de sus hijos, además de acceso al historial de asistencia.
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                <div className="w-12 h-12 bg-green-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Highly Accurate
+                </h3>
+                <p className="text-gray-600">
+                  Advanced AI algorithms ensure precise identification every time
                 </p>
-                <ParentAppDemo />
               </div>
-            )}
-            
-            {activeTab === 'admin' && (
-              <div>
-                <p className="text-gray-600 mb-8 max-w-2xl text-center mx-auto">
-                  Los administradores y docentes pueden monitorear la asistencia escolar con estadísticas detalladas y reportes en tiempo real.
+
+              <div className="bg-white rounded-xl p-6 shadow-lg border border-gray-100">
+                <div className="w-12 h-12 bg-purple-100 rounded-lg flex items-center justify-center mb-4">
+                  <svg className="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z" />
+                  </svg>
+                </div>
+                <h3 className="text-lg font-semibold text-gray-900 mb-2">
+                  Secure & Private
+                </h3>
+                <p className="text-gray-600">
+                  All processing happens locally with enterprise-grade security
                 </p>
-                <AdminDashboard />
               </div>
-            )}
+            </div>
+
+            {/* Instructions */}
+            <div className="mt-12 bg-blue-50 rounded-xl p-8 border border-blue-100">
+              <h3 className="text-xl font-semibold text-gray-900 mb-4">
+                How to Use This Demo
+              </h3>
+              <div className="grid md:grid-cols-2 gap-6">
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Step 1: Camera Access</h4>
+                  <p className="text-gray-600 text-sm">
+                    Click "Allow" when prompted to grant camera access to your browser
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Step 2: Position Yourself</h4>
+                  <p className="text-gray-600 text-sm">
+                    Position your face within the camera frame for optimal recognition
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Step 3: Real-Time Detection</h4>
+                  <p className="text-gray-600 text-sm">
+                    Watch as the system detects and analyzes facial features in real-time
+                  </p>
+                </div>
+                <div>
+                  <h4 className="font-medium text-gray-900 mb-2">Step 4: See Results</h4>
+                  <p className="text-gray-600 text-sm">
+                    Observe the confidence levels and detection accuracy displayed
+                  </p>
+                </div>
+              </div>
+            </div>
           </div>
-        </div>
-        
-        <div className="text-center mt-8">
-          <p className="text-gray-600 mb-4">¿Listo para implementar AsistoYA en tu escuela?</p>
-          <a href="/#contact" className="inline-flex items-center px-6 py-3 border border-transparent text-base font-medium rounded-md shadow-sm text-white bg-blue-600 hover:bg-blue-700">
-            Solicitar una Demostración Completa
-          </a>
-        </div>
+        </Container>
       </div>
-    </div>
+    </AnimatedPage>
   );
-};
-
-export default DemoPage;
+}
