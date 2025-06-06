@@ -1,6 +1,6 @@
-import React, { useState, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import { Bell, CheckCircle, XCircle, Clock } from 'lucide-react';
-import { Notification } from '../types';
+import type { Notification } from '../types';
 
 const mockNotifications: Notification[] = [
   {
@@ -35,6 +35,43 @@ const mockNotifications: Notification[] = [
 const ParentAppDemo = () => {
   const [notifications, setNotifications] = useState<Notification[]>(mockNotifications);
   const [activeTab, setActiveTab] = useState('notifications');
+  
+  // Escuchar notificaciones en tiempo real del sistema de reconocimiento facial
+  useEffect(() => {
+    const handleNewNotifications = (event: CustomEvent) => {
+      const newNotifications = event.detail;
+      console.log('Nuevas notificaciones recibidas:', newNotifications);
+      
+      setNotifications(prev => {
+        // Agregar las nuevas notificaciones al principio de la lista
+        const updated = [...newNotifications, ...prev];
+        
+        // Mostrar una notificación visual
+        if (newNotifications.length > 0) {
+          const studentNames = newNotifications.map((n: any) => n.studentName).join(', ');
+          if ('Notification' in window && Notification.permission === 'granted') {
+            new Notification('AsistoYA - Nueva Asistencia', {
+              body: `${studentNames} ha(n) llegado a la escuela`,
+              icon: '/favicon.ico'
+            });
+          }
+        }
+        
+        return updated;
+      });
+    };
+
+    // Solicitar permisos de notificación
+    if ('Notification' in window && Notification.permission === 'default') {
+      Notification.requestPermission();
+    }
+
+    window.addEventListener('newAttendanceNotifications', handleNewNotifications as EventListener);
+    
+    return () => {
+      window.removeEventListener('newAttendanceNotifications', handleNewNotifications as EventListener);
+    };
+  }, []);
   
   const markAsRead = (id: string) => {
     setNotifications(notifications.map(notification => 
@@ -104,12 +141,28 @@ const ParentAppDemo = () => {
                       {notification.type === 'arrival' && <CheckCircle className="h-5 w-5 text-green-600" />}
                       {notification.type === 'departure' && <Clock className="h-5 w-5 text-blue-600" />}
                       {notification.type === 'absence' && <XCircle className="h-5 w-5 text-red-600" />}
-                    </div>
-                    <div>
+                    </div>                    <div>
                       <p className="font-medium text-gray-900">{notification.message}</p>
-                      <p className="text-gray-500 text-sm">
-                        {notification.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
-                      </p>
+                      <div className="text-gray-500 text-sm">
+                        <p>
+                          {notification.timestamp.toLocaleTimeString([], {hour: '2-digit', minute:'2-digit'})}
+                          {notification.timestamp.toDateString() !== new Date().toDateString() && 
+                            ` - ${notification.timestamp.toLocaleDateString()}`
+                          }
+                        </p>
+                        {/* Mostrar código del estudiante si está disponible */}
+                        {(notification as any).studentCode && (
+                          <p className="text-xs text-blue-600 font-mono">
+                            Código: {(notification as any).studentCode}
+                          </p>
+                        )}
+                        {/* Mostrar confianza si está disponible */}
+                        {(notification as any).confidence && (
+                          <p className="text-xs text-green-600">
+                            Confianza: {Math.round((notification as any).confidence * 100)}%
+                          </p>
+                        )}
+                      </div>
                     </div>
                   </div>
                   {!notification.read && (

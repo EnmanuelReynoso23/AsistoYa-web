@@ -1,4 +1,4 @@
-import React, { useState, useRef, useCallback, useEffect } from 'react';
+import { useState, useRef, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
 import { CheckCircle, School, Loader } from 'lucide-react';
 import * as faceapi from 'face-api.js';

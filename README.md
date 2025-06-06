@@ -12,12 +12,14 @@ AsistoYa Web es la plataforma web para la gestión y asistencia de eventos, clas
 ## Instalación
 
 1. Clona este repositorio:
+
    ```bash
    git clone https://github.com/EnmanuelReynoso23/asistoya-web.git
    cd asistoya-web
    ```
 
 2. Instala las dependencias:
+
    ```bash
    npm install
    # o
@@ -25,6 +27,7 @@ AsistoYa Web es la plataforma web para la gestión y asistencia de eventos, clas
    ```
 
 3. Inicia la aplicación:
+
    ```bash
    npm start
    # o

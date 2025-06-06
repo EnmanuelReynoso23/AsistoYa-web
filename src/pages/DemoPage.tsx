@@ -1,10 +1,12 @@
-import React, { useState } from 'react';
+import { useState } from 'react';
 import FaceRecognitionDemo from '../components/FaceRecognitionDemo';
+import RealTimeFaceRecognition from '../components/RealTimeFaceRecognition';
 import ParentAppDemo from '../components/ParentAppDemo';
 import AdminDashboard from '../components/AdminDashboard';
 
 const DemoPage = () => {
   const [activeTab, setActiveTab] = useState('facial');
+  const [faceRecognitionMode, setFaceRecognitionMode] = useState('realtime');
   
   return (
     <div className="pt-16 bg-gray-50 min-h-screen">
@@ -57,10 +59,60 @@ const DemoPage = () => {
           <div className="p-4">
             {activeTab === 'facial' && (
               <div className="flex flex-col items-center">
-                <p className="text-gray-600 mb-8 max-w-2xl text-center">
+                <p className="text-gray-600 mb-4 max-w-2xl text-center">
                   Nuestra tecnología de reconocimiento facial identifica a los estudiantes al entrar a la escuela, registrando automáticamente su asistencia.
                 </p>
-                <FaceRecognitionDemo />
+
+                {/* Face Recognition Mode Toggle */}
+                <div className="mb-6 bg-gray-100 rounded-lg p-1">
+                  <button
+                    onClick={() => setFaceRecognitionMode('realtime')}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                      faceRecognitionMode === 'realtime'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-700 hover:text-blue-600'
+                    }`}
+                  >
+                    🚀 Sistema Completo (60fps)
+                  </button>
+                  <button
+                    onClick={() => setFaceRecognitionMode('demo')}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                      faceRecognitionMode === 'demo'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-700 hover:text-blue-600'
+                    }`}
+                  >
+                    👁️ Demo Básico
+                  </button>
+                </div>
+
+                {faceRecognitionMode === 'realtime' ? (
+                  <div className="w-full">
+                    <div className="bg-blue-50 border border-blue-200 rounded-lg p-4 mb-6">
+                      <h3 className="text-lg font-semibold text-blue-800 mb-2">🎯 Sistema de Reconocimiento Facial Completo</h3>
+                      <div className="text-sm text-blue-700 space-y-1">
+                        <p>✅ Reconocimiento facial real en tiempo real a 60fps</p>
+                        <p>✅ Registro y gestión de estudiantes con base de datos local</p>
+                        <p>✅ Detección múltiple de rostros simultáneos</p>
+                        <p>✅ Registro automático de asistencia</p>
+                        <p>✅ Configuración de sensibilidad ajustable</p>
+                        <p>✅ Exportación de datos y reportes</p>
+                      </div>
+                    </div>
+                    <RealTimeFaceRecognition />
+                  </div>
+                ) : (
+                  <div className="w-full">
+                    <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-4 mb-6">
+                      <h3 className="text-lg font-semibold text-yellow-800 mb-2">📋 Demo de Simulación</h3>
+                      <p className="text-sm text-yellow-700">
+                        Esta es una simulación que muestra la interfaz y flujo de trabajo del sistema sin usar reconocimiento facial real.
+                      </p>
+                    </div>
+                    <FaceRecognitionDemo />
+                  </div>
+                )}
               </div>
             )}
             
