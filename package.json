@@ -10,12 +10,15 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@mediapipe/face_detection": "^0.4.1633559619",
+    "face-api.js": "^0.22.2",
     "framer-motion": "^10.16.4",
     "lucide-react": "^0.284.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "react-intersection-observer": "^9.5.2",
-    "react-router-dom": "^6.16.0"
+    "react-router-dom": "^6.16.0",
+    "react-webcam": "^7.1.1"
   },
   "devDependencies": {
     "@types/react": "^18.2.15",
