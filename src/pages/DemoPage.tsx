@@ -1,7 +1,7 @@
 import React from 'react';
 import { RealTimeFaceRecognition } from '../components/RealTimeFaceRecognition';
 import { Container } from '../components/Container';
-import { AnimatedPage } from '../components/AnimatedPage';
+import AnimatedPage from '../components/AnimatedPage';
 
 export default function DemoPage() {
   return (
