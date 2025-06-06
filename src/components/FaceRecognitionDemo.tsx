@@ -1,6 +1,6 @@
 import React, { useState, useRef, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { CheckCircle, School } from 'lucide-react';
+import { CheckCircle, School, Loader } from 'lucide-react';
 import * as faceapi from 'face-api.js';
 
 const FaceRecognitionDemo = () => {
@@ -9,19 +9,25 @@ const FaceRecognitionDemo = () => {
   const [student, setStudent] = useState<{name: string; grade: string} | null>(null);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
   const [modelsLoaded, setModelsLoaded] = useState(false);
+  const [modelError, setModelError] = useState<string | null>(null);
   const webcamRef = useRef<Webcam | null>(null);
 
   useEffect(() => {
     const loadModels = async () => {
       try {
+        const MODEL_URL = '/models';
+        
         await Promise.all([
-          faceapi.nets.ssdMobilenetv1.loadFromUri('/models'),
-          faceapi.nets.faceLandmark68Net.loadFromUri('/models'),
-          faceapi.nets.faceRecognitionNet.loadFromUri('/models')
+          faceapi.nets.ssdMobilenetv1.load(MODEL_URL),
+          faceapi.nets.faceLandmark68Net.load(MODEL_URL),
+          faceapi.nets.faceRecognitionNet.load(MODEL_URL)
         ]);
+        
         setModelsLoaded(true);
+        setModelError(null);
       } catch (error) {
         console.error('Error cargando modelos:', error);
+        setModelError('Error al cargar los modelos de reconocimiento facial. Por favor, recarga la página.');
       }
     };
     loadModels();
@@ -69,6 +75,18 @@ const FaceRecognitionDemo = () => {
     height: 480,
     facingMode: "user"
   };
+
+  if (modelError) {
+    return (
+      <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl my-8">
+        <div className="p-8">
+          <div className="text-center text-red-600">
+            <p>{modelError}</p>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="max-w-md mx-auto bg-white rounded-xl shadow-lg overflow-hidden md:max-w-2xl my-8">
@@ -169,14 +187,25 @@ const FaceRecognitionDemo = () => {
         <div className="flex justify-center">
           <button
             onClick={startScan}
-            disabled={scanning || !hasPermission}
+            disabled={scanning || !hasPermission || !modelsLoaded}
             className={`px-6 py-3 rounded-lg text-white font-medium transform transition-all ${
-              scanning || !hasPermission
+              scanning || !hasPermission || !modelsLoaded
                 ? 'bg-gray-400 cursor-not-allowed'
                 : 'bg-blue-600 hover:bg-blue-700 hover:scale-105 active:scale-95 shadow-lg hover:shadow-xl'
             }`}
           >
-            {scanning ? 'Escaneando...' : recognized ? 'Escanear Nuevamente' : 'Iniciar Escaneo'}
+            {!modelsLoaded ? (
+              <span className="flex items-center">
+                <Loader className="animate-spin mr-2" />
+                Cargando modelos...
+              </span>
+            ) : scanning ? (
+              'Escaneando...'
+            ) : recognized ? (
+              'Escanear Nuevamente'
+            ) : (
+              'Iniciar Escaneo'
+            )}
           </button>
         </div>
 
