@@ -1,6 +1,6 @@
 import { useState, useRef, useCallback, useEffect } from 'react';
 import Webcam from 'react-webcam';
-import { CheckCircle, School, Loader, Camera, Play, RotateCcw, Sparkles, Zap, Users, Clock, UserPlus, Edit3, Save, X } from 'lucide-react';
+import { CheckCircle, School, Loader, Camera, Play, RotateCcw, Sparkles, Zap, Users, Clock, UserPlus, Edit3, Save, X, AlertCircle, RefreshCw } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
 interface DetectedFace {
@@ -17,6 +17,7 @@ const FaceRecognitionDemo = () => {
   const [recognized, setRecognized] = useState(false);
   const [detectedFaces, setDetectedFaces] = useState<DetectedFace[]>([]);
   const [hasPermission, setHasPermission] = useState<boolean | null>(null);
+  const [permissionError, setPermissionError] = useState<string | null>(null);
   const [showStats, setShowStats] = useState(false);
   const [attendanceLog, setAttendanceLog] = useState<Array<{name: string; time: Date; code: string}>>([]);
   const [newName, setNewName] = useState('');
@@ -28,12 +29,28 @@ const FaceRecognitionDemo = () => {
 
   const requestCameraPermission = async () => {
     try {
+      setPermissionError(null);
       const stream = await navigator.mediaDevices.getUserMedia({ video: true });
       stream.getTracks().forEach(track => track.stop());
       setHasPermission(true);
     } catch (err) {
       setHasPermission(false);
       console.error('Error accediendo a la cámara:', err);
+      
+      // Provide specific error messages based on the error type
+      if (err instanceof Error) {
+        if (err.name === 'NotAllowedError' || err.message.includes('Permission denied')) {
+          setPermissionError('Acceso a la cámara denegado. Por favor, permite el acceso a la cámara en la configuración de tu navegador y recarga la página.');
+        } else if (err.name === 'NotFoundError') {
+          setPermissionError('No se encontró ninguna cámara en tu dispositivo.');
+        } else if (err.name === 'NotReadableError') {
+          setPermissionError('La cámara está siendo utilizada por otra aplicación.');
+        } else {
+          setPermissionError('Error al acceder a la cámara. Verifica que tu dispositivo tenga una cámara disponible.');
+        }
+      } else {
+        setPermissionError('Error desconocido al acceder a la cámara.');
+      }
     }
   };
 
@@ -195,6 +212,7 @@ const FaceRecognitionDemo = () => {
     setDetectedFaces([]);
     setShowStats(false);
     setAttendanceLog([]);
+    setPermissionError(null);
     if (detectionIntervalRef.current) {
       clearInterval(detectionIntervalRef.current);
     }
@@ -302,19 +320,46 @@ const FaceRecognitionDemo = () => {
                   <motion.div
                     initial={{ scale: 0.8, opacity: 0 }}
                     animate={{ scale: 1, opacity: 1 }}
-                    className="text-center text-white"
+                    className="text-center text-white max-w-md mx-4"
                   >
-                    <Camera className="h-16 w-16 mx-auto mb-4 text-blue-400" />
-                    <h4 className="text-xl font-semibold mb-2">Acceso a Cámara Requerido</h4>
-                    <p className="text-blue-200 mb-6">Para comenzar la demostración, necesitamos acceso a tu cámara</p>
-                    <motion.button
-                      onClick={requestCameraPermission}
-                      className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg"
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.95 }}
-                    >
-                      Permitir Acceso a la Cámara
-                    </motion.button>
+                    {permissionError ? (
+                      <>
+                        <AlertCircle className="h-16 w-16 mx-auto mb-4 text-red-400" />
+                        <h4 className="text-xl font-semibold mb-2">Error de Acceso a la Cámara</h4>
+                        <p className="text-red-200 mb-6 text-sm leading-relaxed">{permissionError}</p>
+                        <div className="space-y-3">
+                          <motion.button
+                            onClick={requestCameraPermission}
+                            className="bg-blue-600 hover:bg-blue-700 text-white px-6 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg flex items-center mx-auto"
+                            whileHover={{ scale: 1.05 }}
+                            whileTap={{ scale: 0.95 }}
+                          >
+                            <RefreshCw className="mr-2 h-5 w-5" />
+                            Intentar de Nuevo
+                          </motion.button>
+                          <div className="text-xs text-blue-200">
+                            <p>Instrucciones:</p>
+                            <p>1. Haz clic en el ícono de cámara en la barra de direcciones</p>
+                            <p>2. Selecciona "Permitir" para el acceso a la cámara</p>
+                            <p>3. Recarga la página si es necesario</p>
+                          </div>
+                        </div>
+                      </>
+                    ) : (
+                      <>
+                        <Camera className="h-16 w-16 mx-auto mb-4 text-blue-400" />
+                        <h4 className="text-xl font-semibold mb-2">Acceso a Cámara Requerido</h4>
+                        <p className="text-blue-200 mb-6">Para comenzar la demostración, necesitamos acceso a tu cámara</p>
+                        <motion.button
+                          onClick={requestCameraPermission}
+                          className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg font-semibold transition-all duration-200 shadow-lg"
+                          whileHover={{ scale: 1.05 }}
+                          whileTap={{ scale: 0.95 }}
+                        >
+                          Permitir Acceso a la Cámara
+                        </motion.button>
+                      </>
+                    )}
                   </motion.div>
                 </div>
               </div>
