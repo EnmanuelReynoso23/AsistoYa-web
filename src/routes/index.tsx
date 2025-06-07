@@ -9,6 +9,7 @@ import ForSchoolsPage from '../pages/ForSchoolsPage';
 import ForParentsPage from '../pages/ForParentsPage';
 import DemoPage from '../pages/DemoPage';
 import PricingPage from '../pages/PricingPage';
+import GamificationPage from '../pages/GamificationPage';
 import AnimatedPage from '../components/AnimatedPage';
 
 const AnimatedRoutes = () => {
@@ -27,6 +28,7 @@ const AnimatedRoutes = () => {
         <Route path="/for-parents" element={<AnimatedPage><ForParentsPage /></AnimatedPage>} />
         <Route path="/demo" element={<AnimatedPage><DemoPage /></AnimatedPage>} />
         <Route path="/pricing" element={<AnimatedPage><PricingPage /></AnimatedPage>} />
+        <Route path="/gamification" element={<AnimatedPage><GamificationPage /></AnimatedPage>} />
       </Routes>
     </AnimatePresence>
   );

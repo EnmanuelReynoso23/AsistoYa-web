@@ -34,6 +34,7 @@ const Navbar = () => {
     { name: 'Para Padres', id: 'testimonials', path: '/for-parents' },
     { name: 'Demo', id: 'demo', path: '/demo' },
     { name: 'Precios', id: 'pricing', path: '/pricing' },
+    { name: 'Gamificación', id: 'gamification', path: '/gamification' },
     { name: 'Contacto', id: 'contact', path: '/#contact' }
   ];
 

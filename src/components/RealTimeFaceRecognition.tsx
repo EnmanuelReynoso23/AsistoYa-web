@@ -1,8 +1,10 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import Webcam from 'react-webcam';
-import { CheckCircle, UserPlus, Users, Settings, Download, Loader, AlertTriangle, Wifi, WifiOff } from 'lucide-react';
+import { CheckCircle, UserPlus, Users, Settings, Download, Loader, AlertTriangle, Wifi, WifiOff, Trophy } from 'lucide-react';
 import { faceApiService, StudentFace, RecognitionResult } from '../services/faceApiService';
 import { studentDatabase } from '../services/studentDatabase';
+import StudentCard from './StudentCard';
+import GamificationWidget from './GamificationWidget';
 
 interface RecognizedStudent {
   student: StudentFace;
@@ -35,6 +37,7 @@ const RealTimeFaceRecognition: React.FC = () => {
   const [threshold, setThreshold] = useState(0.6);
   const [notificationsSent, setNotificationsSent] = useState(false);
   const [connectionStatus, setConnectionStatus] = useState<'online' | 'offline'>('online');
+  const [showGamification, setShowGamification] = useState(true);
 
   const webcamRef = useRef<Webcam | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
@@ -604,6 +607,14 @@ const RealTimeFaceRecognition: React.FC = () => {
           </div>
 
           <div className="flex items-center space-x-4">
+            <button
+              onClick={() => setShowGamification(!showGamification)}
+              className="flex items-center px-3 py-2 bg-purple-100 text-purple-700 rounded hover:bg-purple-200"
+            >
+              <Trophy className="w-4 h-4 mr-1" />
+              {showGamification ? 'Ocultar' : 'Mostrar'} Gamificación
+            </button>
+
             <div className="flex items-center space-x-2">
               <Settings className="w-4 h-4" />
               <label className="text-sm">Sensibilidad:</label>
@@ -710,6 +721,11 @@ const RealTimeFaceRecognition: React.FC = () => {
 
         {/* Recognition Results */}
         <div className="space-y-4">
+          {/* Gamification Widget */}
+          {showGamification && (
+            <GamificationWidget compact={false} showDetails={true} />
+          )}
+
           <div className="bg-green-50 p-4 rounded-lg">
             <h3 className="font-semibold text-green-800 mb-3 flex items-center">
               <Users className="w-5 h-5 mr-2" />
@@ -723,22 +739,14 @@ const RealTimeFaceRecognition: React.FC = () => {
             ) : (
               <div className="space-y-2">
                 {recognizedStudents.map((recognized, index) => (
-                  <div key={`${recognized.student.id}-${index}`} className="bg-white p-3 rounded border">
-                    <div className="flex items-center justify-between">
-                      <div>
-                        <div className="font-medium text-green-800">{recognized.student.name}</div>
-                        {recognized.student.code && (
-                          <div className="text-xs text-blue-600 font-mono">
-                            {recognized.student.code}
-                          </div>
-                        )}
-                        <div className="text-sm text-gray-600">
-                          Confianza: {Math.round(recognized.confidence * 100)}%
-                        </div>
-                      </div>
-                      <CheckCircle className="w-6 h-6 text-green-600" />
-                    </div>
-                  </div>
+                  <StudentCard
+                    key={`${recognized.student.id}-${index}`}
+                    name={recognized.student.name}
+                    arrivalTime={recognized.timestamp}
+                    confidence={recognized.confidence}
+                    studentCode={recognized.student.code}
+                    showGamification={showGamification}
+                  />
                 ))}
               </div>
             )}
