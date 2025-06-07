@@ -1,34 +1,8 @@
-# AsistoYA - Sistema de Asistencia Escolar con IA
+# AsistoYA - Sistema de Asistencia Escolar
 
-AsistoYA es una plataforma web avanzada que integra múltiples tecnologías de inteligencia artificial para revolucionar la gestión de asistencia escolar. El sistema utiliza reconocimiento facial, procesamiento de lenguaje natural, análisis de imágenes y comandos de voz para crear una experiencia completa e interactiva.
+AsistoYA es una plataforma web que revoluciona la gestión de asistencia escolar mediante reconocimiento facial automatizado y notificaciones en tiempo real para padres y escuelas en República Dominicana.
 
 ## 🚀 Características Principales
-
-### Tecnologías de IA Integradas
-
-1. **Reconocimiento de Voz (Web Speech API)**
-   - Comandos de voz en tiempo real
-   - Soporte para español
-   - Visualización de niveles de audio
-   - Síntesis de voz para retroalimentación
-
-2. **Procesamiento de Lenguaje Natural**
-   - Análisis de sentimientos
-   - Detección de emociones
-   - Extracción de palabras clave
-   - Análisis de legibilidad
-
-3. **Análisis de Imágenes (TensorFlow.js)**
-   - Detección de objetos
-   - Análisis de colores dominantes
-   - Detección de emociones faciales
-   - Metadatos de imagen
-
-4. **Chatbot Inteligente**
-   - Respuestas contextuales
-   - Integración con reconocimiento de voz
-   - Historial de conversaciones
-   - Preguntas frecuentes automatizadas
 
 ### Sistema de Reconocimiento Facial
 
@@ -47,7 +21,6 @@ AsistoYA es una plataforma web avanzada que integra múltiples tecnologías de i
 - npm o yarn
 - Navegador moderno (Chrome, Firefox, Safari, Edge)
 - Cámara web (para reconocimiento facial)
-- Micrófono (para reconocimiento de voz)
 
 ### Instalación
 
@@ -78,48 +51,7 @@ npm run dev
 http://localhost:5173
 ```
 
-## 📋 Configuración de APIs
-
-### Web Speech API
-- **Automática**: No requiere configuración adicional
-- **Compatibilidad**: Chrome, Edge, Safari (limitado en Firefox)
-- **Permisos**: Requiere acceso al micrófono
-
-### TensorFlow.js
-- **Modelos**: Se cargan automáticamente desde CDN
-- **Configuración**: Ajustable en `src/components/AIDemo/ImageAnalysis.tsx`
-
-### Face-API.js
-- **Modelos**: Incluidos en `/public/models/`
-- **Configuración**: `src/services/faceApiService.ts`
-
 ## 🎯 Uso de la Aplicación
-
-### Demostración de IA
-
-1. **Acceder a la demo**
-   - Navegar a `/demo`
-   - Seleccionar la pestaña "Funciones de IA"
-
-2. **Reconocimiento de Voz**
-   - Hacer clic en el micrófono
-   - Hablar claramente
-   - Ver la transcripción en tiempo real
-
-3. **Análisis de Imágenes**
-   - Subir una imagen (JPG, PNG, GIF)
-   - Hacer clic en "Analizar Imagen"
-   - Ver resultados de detección
-
-4. **Chatbot**
-   - Escribir preguntas sobre AsistoYA
-   - Usar comandos de voz (opcional)
-   - Explorar preguntas frecuentes
-
-5. **Procesamiento de Texto**
-   - Ingresar texto para analizar
-   - Ver análisis de sentimientos
-   - Revisar palabras clave extraídas
 
 ### Reconocimiento Facial
 
@@ -139,19 +71,14 @@ http://localhost:5173
 ```
 src/
 ├── components/
-│   ├── AIDemo/
-│   │   ├── VoiceRecognition.tsx    # Reconocimiento de voz
-│   │   ├── ImageAnalysis.tsx       # Análisis de imágenes
-│   │   ├── ChatBot.tsx            # Chatbot inteligente
-│   │   └── NLPProcessor.tsx       # Procesamiento de lenguaje
 │   ├── FaceRecognitionDemo.tsx    # Demo simulado
 │   ├── RealTimeFaceRecognition.tsx # Sistema completo
+│   ├── ParentAppDemo.tsx          # App para padres
+│   ├── AdminDashboard.tsx         # Panel administrativo
 │   └── ...
 ├── services/
 │   ├── faceApiService.ts          # Servicio de reconocimiento facial
 │   └── studentDatabase.ts         # Base de datos local
-├── types/
-│   └── speech.d.ts               # Tipos para Speech API
 └── pages/
     └── DemoPage.tsx              # Página principal de demo
 ```
@@ -163,27 +90,24 @@ src/
 - Usar Tailwind CSS para componentes
 - Personalizar colores en `tailwind.config.js`
 
-### Configuración de IA
+### Configuración del Sistema
 - **Sensibilidad de reconocimiento**: `src/services/faceApiService.ts`
-- **Idioma de voz**: Cambiar `lang` en componentes de voz
 - **Modelos de IA**: Actualizar rutas en servicios
 
 ## 🚨 Limitaciones Conocidas
 
 ### Compatibilidad del Navegador
-- **Speech Recognition**: Limitado en Firefox
 - **WebRTC**: Requiere HTTPS en producción
 - **IndexedDB**: Soportado en todos los navegadores modernos
 
 ### Rendimiento
 - **Reconocimiento facial**: Requiere hardware decente
-- **Análisis de imágenes**: Limitado por memoria del navegador
 - **Modelos de IA**: Tiempo de carga inicial
 
 ### Privacidad y Seguridad
 - **Datos locales**: Todo se procesa en el navegador
 - **Sin servidor**: No se envían datos biométricos
-- **Permisos**: Requiere acceso a cámara y micrófono
+- **Permisos**: Requiere acceso a cámara
 
 ## 🔒 Consideraciones de Seguridad
 
@@ -209,16 +133,6 @@ src/
 - **Velocidad**: 60fps de procesamiento
 - **Capacidad**: Múltiples rostros simultáneos
 
-### Procesamiento de Voz
-- **Latencia**: <500ms para transcripción
-- **Idiomas**: Español (es-ES) optimizado
-- **Precisión**: 95%+ en ambiente silencioso
-
-### Análisis de Imágenes
-- **Formatos**: JPG, PNG, GIF
-- **Tamaño máximo**: 10MB
-- **Tiempo de procesamiento**: 2-5 segundos
-
 ## 🤝 Contribución
 
 1. Fork el repositorio
@@ -241,19 +155,17 @@ Para soporte técnico o preguntas:
 
 ## 🔄 Actualizaciones
 
-### Versión 2.0.0 (Actual)
-- ✅ Integración completa de IA
-- ✅ Reconocimiento de voz
-- ✅ Análisis de imágenes
-- ✅ Chatbot inteligente
-- ✅ Procesamiento de lenguaje natural
+### Versión 1.0.0 (Actual)
+- ✅ Sistema de reconocimiento facial
+- ✅ App para padres con notificaciones
+- ✅ Panel administrativo
+- ✅ Base de datos local
 
 ### Próximas Funcionalidades
-- 🔄 Integración con OpenAI GPT
-- 🔄 Análisis de video en tiempo real
-- 🔄 Reconocimiento de emociones avanzado
+- 🔄 Integración con sistemas escolares
+- 🔄 Reportes avanzados
 - 🔄 API REST para integraciones externas
 
 ---
 
-**AsistoYA** - Revolucionando la educación con inteligencia artificial 🚀
+**AsistoYA** - Revolucionando la educación con tecnología avanzada 🚀
