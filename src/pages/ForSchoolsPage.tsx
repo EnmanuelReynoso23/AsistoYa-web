@@ -1,6 +1,5 @@
 import React from 'react';
 import { Clock, Users, BarChart as ChartBar, Zap, DollarSign, Shield, CheckCircle, TrendingUp } from 'lucide-react';
-import AdminDashboard from '../components/AdminDashboard';
 
 const benefits = [
   {
@@ -54,40 +53,170 @@ const ForSchoolsPage = () => {
           </p>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-20 transform hover:scale-[1.02] transition-transform duration-300">
-          <div className="grid grid-cols-1 lg:grid-cols-2 gap-0">
-            <div className="p-8 lg:p-12 flex flex-col justify-center">
-              <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">Panel de Control Avanzado</h2>
-              <p className="text-lg text-gray-600 mb-8 leading-relaxed">
-                Nuestro dashboard administrativo proporciona visualizaciones claras y reportes detallados que permiten a directores y docentes monitorear la asistencia en tiempo real.
-              </p>
-              <ul className="space-y-6 mb-8">
-                {[
-                  'Estadísticas de asistencia diaria, semanal y mensual',
-                  'Alertas automáticas para ausentismo recurrente',
-                  'Exportación de reportes en múltiples formatos',
-                  'Integración con sistemas de gestión escolar existentes'
-                ].map((feature, index) => (
-                  <li key={index} className="flex items-start">
-                    <div className="flex-shrink-0">
-                      <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
-                        <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                        </svg>
+        {/* Dashboard Preview Section - Redesigned */}
+        <div className="bg-white rounded-2xl shadow-xl overflow-hidden mb-20">
+          <div className="p-8 lg:p-12">
+            <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
+              {/* Left Content */}
+              <div>
+                <h2 className="text-3xl font-bold text-gray-900 mb-6 leading-tight">
+                  Panel de Control Avanzado
+                </h2>
+                <p className="text-lg text-gray-600 mb-8 leading-relaxed">
+                  Nuestro dashboard administrativo proporciona visualizaciones claras y reportes detallados que permiten a directores y docentes monitorear la asistencia en tiempo real.
+                </p>
+                
+                <div className="space-y-6 mb-8">
+                  {[
+                    'Estadísticas de asistencia diaria, semanal y mensual',
+                    'Alertas automáticas para ausentismo recurrente',
+                    'Exportación de reportes en múltiples formatos',
+                    'Integración con sistemas de gestión escolar existentes'
+                  ].map((feature, index) => (
+                    <div key={index} className="flex items-start">
+                      <div className="flex-shrink-0">
+                        <div className="h-6 w-6 rounded-full bg-green-100 flex items-center justify-center">
+                          <svg className="h-4 w-4 text-green-500" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                          </svg>
+                        </div>
+                      </div>
+                      <p className="ml-3 text-gray-600">{feature}</p>
+                    </div>
+                  ))}
+                </div>
+                
+                <button className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105">
+                  Solicitar Demostración
+                </button>
+              </div>
+
+              {/* Right - Dashboard Preview */}
+              <div className="relative">
+                {/* Browser Frame */}
+                <div className="bg-gray-800 rounded-t-lg p-3">
+                  <div className="flex items-center space-x-2">
+                    <div className="w-3 h-3 bg-red-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-yellow-500 rounded-full"></div>
+                    <div className="w-3 h-3 bg-green-500 rounded-full"></div>
+                    <div className="flex-1 bg-gray-700 rounded ml-4 px-3 py-1">
+                      <span className="text-gray-300 text-xs">dashboard.asistoya.com</span>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dashboard Content */}
+                <div className="bg-gradient-to-br from-blue-600 to-purple-600 p-6 text-white">
+                  <div className="flex items-center justify-between mb-6">
+                    <div>
+                      <h3 className="text-xl font-bold">Panel de Control MINERD</h3>
+                      <p className="text-blue-100 text-sm">Sistema Nacional de Asistencia Escolar</p>
+                    </div>
+                    <div className="text-right">
+                      <div className="flex items-center text-sm mb-1">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
+                        En vivo
+                      </div>
+                      <div className="text-sm font-mono">09:45:23</div>
+                    </div>
+                  </div>
+
+                  {/* Stats Grid */}
+                  <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 mb-6">
+                    <div className="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold">2.0M</div>
+                      <div className="text-xs text-blue-200">Estudiantes</div>
+                    </div>
+                    <div className="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold">7.5K</div>
+                      <div className="text-xs text-blue-200">Escuelas</div>
+                    </div>
+                    <div className="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold">15K</div>
+                      <div className="text-xs text-blue-200">Docentes</div>
+                    </div>
+                    <div className="bg-white bg-opacity-20 rounded-lg p-4 text-center">
+                      <div className="text-2xl font-bold">95%</div>
+                      <div className="text-xs text-blue-200">Asistencia</div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Dashboard Body */}
+                <div className="bg-white p-6">
+                  <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                    {/* Activity Feed */}
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-4 flex items-center">
+                        <div className="w-2 h-2 bg-green-400 rounded-full animate-pulse mr-2"></div>
+                        Actividad en Tiempo Real
+                      </h4>
+                      <div className="space-y-3">
+                        {[
+                          { time: '07:45', event: 'María Rodríguez llegó', school: 'Liceo Matutino', type: 'arrival' },
+                          { time: '07:50', event: 'Juan Pérez llegó', school: 'Escuela Central', type: 'arrival' },
+                          { time: '08:15', event: 'Ana García - Ausencia', school: 'Colegio San José', type: 'absence' }
+                        ].map((activity, index) => (
+                          <div key={index} className={`border rounded-lg p-3 ${
+                            activity.type === 'arrival' ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'
+                          }`}>
+                            <div className="flex items-center justify-between">
+                              <div>
+                                <div className="text-sm font-medium text-gray-900">{activity.event}</div>
+                                <div className="text-xs text-gray-500">{activity.school}</div>
+                              </div>
+                              <div className="text-xs text-gray-500">{activity.time}</div>
+                            </div>
+                          </div>
+                        ))}
                       </div>
                     </div>
-                    <p className="ml-3 text-gray-600">{feature}</p>
-                  </li>
-                ))}
-              </ul>
-              <button className="inline-flex items-center justify-center px-6 py-3 border border-transparent text-base font-medium rounded-lg text-white bg-blue-600 hover:bg-blue-700 transition-colors duration-200 transform hover:scale-105">
-                Solicitar Demostración
-              </button>
-            </div>
-            <div className="bg-gray-50 p-4 lg:p-6">
-              <div className="h-full overflow-hidden rounded-lg shadow-inner bg-white">
-                <div className="transform scale-90 origin-top-left">
-                  <AdminDashboard />
+
+                    {/* Attendance by Level */}
+                    <div>
+                      <h4 className="font-semibold text-gray-900 mb-4">Asistencia por Nivel</h4>
+                      <div className="space-y-4">
+                        {[
+                          { level: 'Primer Ciclo', percentage: 96, color: 'bg-blue-500' },
+                          { level: 'Segundo Ciclo', percentage: 94, color: 'bg-green-500' },
+                          { level: 'Bachillerato', percentage: 92, color: 'bg-purple-500' },
+                          { level: 'Técnico', percentage: 95, color: 'bg-orange-500' }
+                        ].map((level, index) => (
+                          <div key={index}>
+                            <div className="flex justify-between items-center mb-1">
+                              <span className="text-sm text-gray-700">{level.level}</span>
+                              <span className="text-sm font-semibold text-gray-900">{level.percentage}%</span>
+                            </div>
+                            <div className="w-full bg-gray-200 rounded-full h-2">
+                              <div
+                                className={`h-2 rounded-full ${level.color}`}
+                                style={{ width: `${level.percentage}%` }}
+                              />
+                            </div>
+                          </div>
+                        ))}
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Top Schools */}
+                  <div className="mt-6">
+                    <h4 className="font-semibold text-gray-900 mb-4">Escuelas con Mejor Rendimiento</h4>
+                    <div className="grid grid-cols-2 lg:grid-cols-4 gap-3">
+                      {[
+                        { name: 'Liceo José Martí', percentage: 98.5, location: 'Santo Domingo' },
+                        { name: 'Colegio San Rafael', percentage: 97.8, location: 'Santiago' },
+                        { name: 'Instituto Central', percentage: 97.2, location: 'La Vega' },
+                        { name: 'Escuela Duarte', percentage: 96.9, location: 'San Pedro' }
+                      ].map((school, index) => (
+                        <div key={index} className="bg-green-50 border border-green-200 rounded-lg p-3">
+                          <div className="text-lg font-bold text-green-600">{school.percentage}%</div>
+                          <div className="text-xs font-medium text-gray-900">{school.name}</div>
+                          <div className="text-xs text-gray-500">{school.location}</div>
+                        </div>
+                      ))}
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
