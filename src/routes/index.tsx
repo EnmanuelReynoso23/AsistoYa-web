@@ -8,6 +8,7 @@ import HowItWorksPage from '../pages/HowItWorksPage';
 import ForSchoolsPage from '../pages/ForSchoolsPage';
 import ForParentsPage from '../pages/ForParentsPage';
 import DemoPage from '../pages/DemoPage';
+import PricingPage from '../pages/PricingPage';
 import AnimatedPage from '../components/AnimatedPage';
 
 const AnimatedRoutes = () => {
@@ -25,6 +26,7 @@ const AnimatedRoutes = () => {
         <Route path="/for-schools" element={<AnimatedPage><ForSchoolsPage /></AnimatedPage>} />
         <Route path="/for-parents" element={<AnimatedPage><ForParentsPage /></AnimatedPage>} />
         <Route path="/demo" element={<AnimatedPage><DemoPage /></AnimatedPage>} />
+        <Route path="/pricing" element={<AnimatedPage><PricingPage /></AnimatedPage>} />
       </Routes>
     </AnimatePresence>
   );

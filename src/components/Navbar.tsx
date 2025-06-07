@@ -33,6 +33,7 @@ const Navbar = () => {
     { name: 'Para Escuelas', id: 'features', path: '/for-schools' },
     { name: 'Para Padres', id: 'testimonials', path: '/for-parents' },
     { name: 'Demo', id: 'demo', path: '/demo' },
+    { name: 'Precios', id: 'pricing', path: '/pricing' },
     { name: 'Contacto', id: 'contact', path: '/#contact' }
   ];
 
