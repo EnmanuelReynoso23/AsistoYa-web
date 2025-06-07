@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { motion } from 'framer-motion';
 import GamificationPanel from '../components/GamificationPanel';
 import GamificationWidget from '../components/GamificationWidget';
-import { Trophy, Star, Users, Target, Gamepad2, Award } from 'lucide-react';
+import { Trophy, Star, Users, Target, Gamepad2, Award, TrendingUp } from 'lucide-react';
 
 const GamificationPage = () => {
   const [showWidget, setShowWidget] = useState(true);
