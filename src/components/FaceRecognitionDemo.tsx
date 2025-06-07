@@ -93,7 +93,7 @@ const FaceRecognitionDemo = () => {
               <div className="text-xs text-blue-200">Precisión</div>
             </div>
             <div className="text-center">
-              <div className="text-2xl font-bold">< 1s</div>
+              <div className="text-2xl font-bold">{"< 1s"}</div>
               <div className="text-xs text-blue-200">Velocidad</div>
             </div>
           </div>
@@ -406,7 +406,7 @@ const FaceRecognitionDemo = () => {
                 <div className="space-y-3">
                   <div className="flex items-center justify-between bg-white rounded-lg p-3">
                     <span className="text-gray-700">Velocidad de reconocimiento</span>
-                    <span className="font-semibold text-indigo-600">< 1 segundo</span>
+                    <span className="font-semibold text-indigo-600">{"< 1 segundo"}</span>
                   </div>
                   <div className="flex items-center justify-between bg-white rounded-lg p-3">
                     <span className="text-gray-700">Precisión del sistema</span>
