@@ -5,27 +5,26 @@ import { motion } from 'framer-motion';
 const plans = [
   {
     id: 'free',
-    name: 'Gratuito',
+    name: 'Free',
     price: 0,
     period: 'mes',
-    description: 'Perfecto para escuelas pequeñas que quieren probar AsistoYA',
-    maxStudents: 50,
+    description: 'Ideal para centros pequeños o prueba piloto',
+    maxStudents: 80,
     popular: false,
     icon: <Users className="h-8 w-8" />,
     color: 'gray',
     features: [
-      'Hasta 50 estudiantes',
-      'Reconocimiento facial básico',
-      'Notificaciones SMS (50/mes)',
-      'Reportes básicos',
-      'Soporte por email',
-      'Almacenamiento 30 días'
+      'Hasta 80 estudiantes',
+      'Notificaciones automáticas a padres',
+      'Registro facial asistido',
+      'Reportes básicos mensuales',
+      'Usuarios ilimitados (directores y docentes)',
+      'Soporte por email'
     ],
     limitations: [
-      'Sin app móvil para padres',
-      'Sin integración con sistemas',
       'Sin reportes avanzados',
-      'Sin soporte telefónico'
+      'Sin integración con sistemas externos',
+      'Funcionalidades básicas'
     ],
     cta: 'Comenzar Gratis',
     ctaType: 'primary'
@@ -33,27 +32,27 @@ const plans = [
   {
     id: 'basic',
     name: 'Básico',
-    price: 2500,
+    price: 6500,
     period: 'mes',
-    description: 'Ideal para escuelas primarias y colegios pequeños',
+    description: 'Para escuelas primarias y colegios medianos',
     maxStudents: 300,
     popular: false,
     icon: <School className="h-8 w-8" />,
     color: 'blue',
     features: [
       'Hasta 300 estudiantes',
-      'Reconocimiento facial avanzado',
-      'App móvil para padres',
-      'Notificaciones SMS ilimitadas',
-      'Notificaciones push gratuitas',
+      'Asistencia facial automática',
+      'Notificaciones en tiempo real',
       'Reportes detallados',
+      'Panel por curso y fecha',
+      'Usuarios ilimitados',
+      'App móvil para padres',
       'Soporte telefónico',
-      'Almacenamiento 90 días',
-      'Panel administrativo completo'
+      'Almacenamiento 90 días'
     ],
     limitations: [
-      'Sin integración con sistemas externos',
-      'Sin análisis predictivo'
+      'Sin acceso a historial completo',
+      'Sin alertas de ausentismo avanzadas'
     ],
     cta: 'Elegir Básico',
     ctaType: 'primary'
@@ -63,22 +62,21 @@ const plans = [
     name: 'Premium',
     price: 4500,
     period: 'mes',
-    description: 'La opción más popular para escuelas medianas',
+    description: 'La opción más popular - mejor relación calidad-precio',
     maxStudents: 800,
     popular: true,
     icon: <Star className="h-8 w-8" />,
     color: 'purple',
     features: [
       'Hasta 800 estudiantes',
-      'Reconocimiento facial de alta precisión',
-      'App móvil premium para padres',
-      'Notificaciones SMS y push ilimitadas',
+      'Todo lo del plan Básico',
+      'Acceso a historial completo',
+      'Panel estadístico con alertas de ausentismo',
+      'Exportación avanzada de reportes',
       'Gamificación para estudiantes',
-      'Reportes avanzados y analytics',
-      'Integración con sistemas escolares',
-      'Soporte prioritario 24/7',
+      'Integración básica con sistemas escolares',
+      'Soporte prioritario',
       'Almacenamiento 1 año',
-      'API para desarrolladores',
       'Múltiples cámaras'
     ],
     limitations: [],
@@ -87,8 +85,8 @@ const plans = [
   },
   {
     id: 'pro',
-    name: 'Profesional',
-    price: 7500,
+    name: 'Pro',
+    price: 9600,
     period: 'mes',
     description: 'Para instituciones grandes con múltiples sedes',
     maxStudents: 2000,
@@ -97,20 +95,18 @@ const plans = [
     color: 'indigo',
     features: [
       'Hasta 2,000 estudiantes',
-      'Reconocimiento facial empresarial',
-      'App móvil white-label',
-      'Comunicaciones ilimitadas',
-      'Análisis predictivo de ausentismo',
+      'Todo lo del plan Premium',
+      'Multi-campus / múltiples niveles',
+      'Integración con plataformas educativas externas',
+      'Soporte técnico especializado',
       'Dashboard ejecutivo',
-      'Integración completa con SIS',
-      'Soporte dedicado',
-      'Almacenamiento ilimitado',
       'API completa',
-      'Múltiples sedes',
-      'Capacitación incluida'
+      'Análisis predictivo',
+      'Capacitación incluida',
+      'Almacenamiento ilimitado'
     ],
     limitations: [],
-    cta: 'Elegir Profesional',
+    cta: 'Elegir Pro',
     ctaType: 'primary'
   },
   {
@@ -124,18 +120,17 @@ const plans = [
     icon: <Crown className="h-8 w-8" />,
     color: 'gold',
     features: [
-      'Estudiantes ilimitados',
+      'Más de 2,000 estudiantes',
+      'Funcionalidades y reportes personalizados',
+      'Personalización por centro educativo',
+      'Soporte técnico y pedagógico dedicado',
       'Implementación personalizada',
       'Infraestructura dedicada',
       'Integración completa con MINERD',
       'Análisis de big data',
       'Dashboard nacional/regional',
-      'Soporte 24/7 dedicado',
-      'Capacitación completa',
-      'Consultoría incluida',
       'SLA garantizado',
-      'Cumplimiento normativo',
-      'Implementación gradual'
+      'Consultoría incluida'
     ],
     limitations: [],
     cta: 'Contactar Ventas',
@@ -156,13 +151,13 @@ const benefits = [
   },
   {
     icon: <Phone className="h-6 w-6 text-purple-500" />,
-    title: 'Notificaciones Gratuitas',
-    description: 'Push notifications ilimitadas. SMS incluidos en todos los planes de pago.'
+    title: 'Usuarios Ilimitados',
+    description: 'Todos los planes incluyen usuarios ilimitados para directores y docentes.'
   },
   {
     icon: <Users className="h-6 w-6 text-orange-500" />,
     title: 'Accesible para Todos',
-    description: 'Precios especiales para escuelas públicas y organizaciones sin fines de lucro.'
+    description: 'Plan gratuito robusto y precios especiales para escuelas públicas.'
   }
 ];
 
@@ -180,8 +175,8 @@ const faqs = [
     answer: 'Incluye configuración del sistema, capacitación del personal, migración de datos existentes y soporte durante las primeras 2 semanas.'
   },
   {
-    question: '¿Hay contratos a largo plazo?',
-    answer: 'No requerimos contratos anuales. Puedes pagar mes a mes, aunque ofrecemos descuentos del 15% por pagos anuales anticipados.'
+    question: '¿Por qué el Premium cuesta menos que el Básico?',
+    answer: 'El Premium es nuestro plan más popular con mejor relación calidad-precio. Está diseñado para ser accesible mientras ofrece funcionalidades avanzadas que justifican el menor costo por estudiante.'
   }
 ];
 
@@ -192,7 +187,7 @@ const PricingPage = () => {
   const [calculatorStudents, setCalculatorStudents] = useState(100);
 
   const getRecommendedPlan = (students: number) => {
-    if (students <= 50) return 'free';
+    if (students <= 80) return 'free';
     if (students <= 300) return 'basic';
     if (students <= 800) return 'premium';
     if (students <= 2000) return 'pro';
@@ -259,7 +254,7 @@ const PricingPage = () => {
             transition={{ delay: 0.1 }}
             className="text-xl text-gray-600 max-w-3xl mx-auto mb-8"
           >
-            Elige el plan perfecto para tu institución educativa. Todos los planes incluyen soporte técnico y actualizaciones gratuitas.
+            Digitaliza el control de asistencia sin inversión en hardware. Planes escalables y accesibles para toda Latinoamérica.
           </motion.p>
 
           {/* Billing Toggle */}
@@ -334,6 +329,23 @@ const PricingPage = () => {
           )}
         </div>
 
+        {/* Value Proposition */}
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.4 }}
+          className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl text-white p-8 mb-12 text-center"
+        >
+          <h2 className="text-2xl font-bold mb-4">
+            🎯 Más que un sistema de asistencia
+          </h2>
+          <p className="text-lg text-blue-100 max-w-4xl mx-auto">
+            AsistoYA es una herramienta completa para mejorar la gestión educativa, comunicación con las familias, 
+            y la eficiencia del personal docente. Desde nuestra versión gratuita hasta opciones robustas para grandes instituciones, 
+            reforzamos nuestro compromiso con la accesibilidad y la innovación educativa en toda la región.
+          </p>
+        </motion.div>
+
         {/* Pricing Cards */}
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 mb-16">
           {plans.map((plan, index) => (
@@ -372,6 +384,8 @@ const PricingPage = () => {
                   <div className="mb-4">
                     {plan.price === null ? (
                       <div className="text-2xl font-bold text-gray-900">Personalizado</div>
+                    ) : plan.price === 0 ? (
+                      <div className="text-3xl font-bold text-green-600">GRATIS</div>
                     ) : (
                       <>
                         <div className="text-3xl font-bold text-gray-900">
@@ -482,16 +496,16 @@ const PricingPage = () => {
             ¿Listo para Transformar tu Escuela?
           </h2>
           <p className="text-xl text-blue-100 mb-8 max-w-2xl mx-auto">
-            Solicita una demostración gratuita y descubre cómo AsistoYA puede revolucionar la gestión de asistencia en tu institución.
+            Comienza con nuestro plan gratuito o solicita una demostración personalizada para descubrir cómo AsistoYA puede revolucionar la gestión de asistencia en tu institución.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 justify-center">
             <button className="bg-white text-blue-600 px-8 py-4 rounded-lg font-semibold hover:bg-blue-50 transition-colors flex items-center justify-center">
-              <Phone className="h-5 w-5 mr-2" />
-              Solicitar Demo Gratuita
+              <Users className="h-5 w-5 mr-2" />
+              Comenzar Gratis
             </button>
             <button className="border-2 border-white text-white px-8 py-4 rounded-lg font-semibold hover:bg-white hover:text-blue-600 transition-colors flex items-center justify-center">
-              <Mail className="h-5 w-5 mr-2" />
-              Contactar Ventas
+              <Phone className="h-5 w-5 mr-2" />
+              Solicitar Demo
             </button>
           </div>
           <p className="text-blue-200 text-sm mt-6">
