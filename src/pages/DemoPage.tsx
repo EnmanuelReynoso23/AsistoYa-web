@@ -1,12 +1,13 @@
 import { useState } from 'react';
 import FaceRecognitionDemo from '../components/FaceRecognitionDemo';
 import RealTimeFaceRecognition from '../components/RealTimeFaceRecognition';
+import SimpleFaceScanner from '../components/SimpleFaceScanner';
 import ParentAppDemo from '../components/ParentAppDemo';
 import AdminDashboard from '../components/AdminDashboard';
 
 const DemoPage = () => {
   const [activeTab, setActiveTab] = useState('facial');
-  const [faceRecognitionMode, setFaceRecognitionMode] = useState('realtime');
+  const [faceRecognitionMode, setFaceRecognitionMode] = useState('scanner');
   
   return (
     <div className="pt-16 bg-gray-50 min-h-screen">
@@ -76,6 +77,16 @@ const DemoPage = () => {
                     🚀 Sistema Completo (60fps)
                   </button>
                   <button
+                    onClick={() => setFaceRecognitionMode('scanner')}
+                    className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
+                      faceRecognitionMode === 'scanner'
+                        ? 'bg-blue-600 text-white shadow-sm'
+                        : 'text-gray-700 hover:text-blue-600'
+                    }`}
+                  >
+                    ✨ Escáner Simplificado
+                  </button>
+                  <button
                     onClick={() => setFaceRecognitionMode('demo')}
                     className={`px-4 py-2 rounded-md text-sm font-medium transition-all ${
                       faceRecognitionMode === 'demo'
@@ -101,6 +112,21 @@ const DemoPage = () => {
                       </div>
                     </div>
                     <RealTimeFaceRecognition />
+                  </div>
+                ) : faceRecognitionMode === 'scanner' ? (
+                  <div className="w-full">
+                    <div className="bg-cyan-50 border border-cyan-200 rounded-lg p-4 mb-6">
+                      <h3 className="text-lg font-semibold text-cyan-800 mb-2">✨ Escáner de Reconocimiento Simplificado</h3>
+                      <div className="text-sm text-cyan-700 space-y-1">
+                        <p>✅ Interfaz simplificada y elegante</p>
+                        <p>✅ Efecto de escaneo visual atractivo</p>
+                        <p>✅ Reconocimiento inmediato de estudiantes</p>
+                        <p>✅ Experiencia de usuario optimizada</p>
+                        <p>✅ Animaciones suaves y modernas</p>
+                        <p>✅ Ideal para presentaciones y demos</p>
+                      </div>
+                    </div>
+                    <SimpleFaceScanner />
                   </div>
                 ) : (
                   <div className="w-full">

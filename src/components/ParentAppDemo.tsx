@@ -5,6 +5,15 @@ import type { Notification } from '../types';
 
 const mockNotifications: Notification[] = [
   {
+    id: '0',
+    studentId: '100',
+    studentName: 'María Elena Rodríguez',
+    type: 'arrival',
+    message: 'María Elena Rodríguez (MER2025) llegó a la escuela',
+    timestamp: new Date(),
+    read: false
+  },
+  {
     id: '1',
     studentId: '101',
     studentName: 'María Rodríguez',

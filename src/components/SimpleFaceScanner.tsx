@@ -9,7 +9,7 @@ interface StudentInfo {
   arrivalTime: string;
 }
 
-const FaceRecognitionDemo = () => {
+const SimpleFaceScanner: React.FC = () => {
   const [isScanning, setIsScanning] = useState(false);
   const [scanComplete, setScanComplete] = useState(false);
   const [student, setStudent] = useState<StudentInfo | null>(null);
@@ -399,4 +399,4 @@ const FaceRecognitionDemo = () => {
   );
 };
 
-export default FaceRecognitionDemo;
+export default SimpleFaceScanner;
