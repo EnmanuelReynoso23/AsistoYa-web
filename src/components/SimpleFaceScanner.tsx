@@ -104,7 +104,7 @@ const SimpleFaceScanner: React.FC = () => {
             {/* Imagen de estudiante */}
             <div className="absolute inset-0">
               <img
-                src="/src/assets/mARIA.jpeg"
+                src="/mARIA.jpeg"
                 alt="Estudiante"
                 className="w-full h-full object-cover"
               />
