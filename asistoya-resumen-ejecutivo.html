@@ -1,0 +1,652 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AsistoYA - Resumen Ejecutivo</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #2d3748;
+            background: #f8fafc;
+        }
+        
+        .container {
+            max-width: 210mm;
+            margin: 0 auto;
+            background: white;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.1);
+            min-height: 297mm;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 60px 50px;
+            text-align: center;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .header::before {
+            content: '';
+            position: absolute;
+            top: -50px;
+            right: -50px;
+            width: 200px;
+            height: 200px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 50%;
+        }
+        
+        .header::after {
+            content: '';
+            position: absolute;
+            bottom: -30px;
+            left: -30px;
+            width: 150px;
+            height: 150px;
+            background: rgba(255,255,255,0.05);
+            border-radius: 50%;
+        }
+        
+        .header h1 {
+            font-size: 48px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            letter-spacing: -1px;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header .subtitle {
+            font-size: 24px;
+            font-weight: 300;
+            opacity: 0.9;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .header .tagline {
+            font-size: 16px;
+            margin-top: 20px;
+            opacity: 0.8;
+            position: relative;
+            z-index: 2;
+        }
+        
+        .content {
+            padding: 50px;
+        }
+        
+        .section {
+            margin-bottom: 45px;
+            page-break-inside: avoid;
+        }
+        
+        .section h2 {
+            font-size: 28px;
+            font-weight: 600;
+            color: #2d3748;
+            margin-bottom: 25px;
+            padding-bottom: 10px;
+            border-bottom: 3px solid #667eea;
+            position: relative;
+        }
+        
+        .section h2::after {
+            content: '';
+            position: absolute;
+            bottom: -3px;
+            left: 0;
+            width: 50px;
+            height: 3px;
+            background: #764ba2;
+        }
+        
+        .section h3 {
+            font-size: 20px;
+            font-weight: 500;
+            color: #4a5568;
+            margin: 25px 0 15px 0;
+        }
+        
+        .section p {
+            font-size: 16px;
+            line-height: 1.8;
+            color: #4a5568;
+            margin-bottom: 18px;
+            text-align: justify;
+        }
+        
+        .highlight-box {
+            background: linear-gradient(135deg, #f7fafc 0%, #e2e8f0 100%);
+            border-left: 5px solid #667eea;
+            padding: 25px;
+            margin: 25px 0;
+            border-radius: 0 8px 8px 0;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+        }
+        
+        .benefits-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 25px;
+            margin: 25px 0;
+        }
+        
+        .benefit-card {
+            background: white;
+            border: 1px solid #e2e8f0;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            transition: transform 0.2s ease;
+        }
+        
+        .benefit-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(0,0,0,0.1);
+        }
+        
+        .benefit-card h4 {
+            font-size: 18px;
+            font-weight: 600;
+            color: #667eea;
+            margin-bottom: 12px;
+        }
+        
+        .benefit-card p {
+            font-size: 14px;
+            color: #4a5568;
+            margin: 0;
+        }
+        
+        .stats-container {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            margin: 30px 0;
+        }
+        
+        .stat-card {
+            text-align: center;
+            background: white;
+            border-radius: 12px;
+            padding: 25px;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            border: 1px solid #e2e8f0;
+        }
+        
+        .stat-number {
+            font-size: 36px;
+            font-weight: 700;
+            color: #667eea;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 14px;
+            color: #4a5568;
+            margin-top: 8px;
+        }
+        
+        .tech-stack {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 12px;
+            margin: 20px 0;
+        }
+        
+        .tech-badge {
+            background: #667eea;
+            color: white;
+            padding: 8px 16px;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        
+        .footer {
+            background: #2d3748;
+            color: white;
+            padding: 40px 50px;
+            text-align: center;
+            margin-top: 50px;
+        }
+        
+        .footer p {
+            color: #a0aec0;
+            margin: 0;
+        }
+        
+        .page-break {
+            page-break-before: always;
+        }
+        
+        @media print {
+            * {
+                -webkit-print-color-adjust: exact !important;
+                color-adjust: exact !important;
+                print-color-adjust: exact !important;
+            }
+            
+            body {
+                background: white !important;
+                font-size: 12pt !important;
+                line-height: 1.4 !important;
+                margin: 0 !important;
+                padding: 0 !important;
+            }
+            
+            .container {
+                box-shadow: none !important;
+                max-width: none !important;
+                margin: 0 !important;
+                padding: 0 !important;
+                background: white !important;
+            }
+            
+            .header {
+                background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+                color: white !important;
+                padding: 40pt 30pt !important;
+                page-break-after: avoid !important;
+                -webkit-print-color-adjust: exact !important;
+                text-align: center !important;
+            }
+            
+            .header h1 {
+                font-size: 36pt !important;
+                margin-bottom: 15pt !important;
+                color: white !important;
+                text-align: center !important;
+                font-weight: bold !important;
+            }
+            
+            .header .subtitle {
+                font-size: 20pt !important;
+                color: white !important;
+                text-align: center !important;
+                margin-bottom: 8pt !important;
+            }
+            
+            .header .tagline {
+                font-size: 13pt !important;
+                color: white !important;
+                margin-top: 15pt !important;
+                text-align: center !important;
+            }
+            
+            .content {
+                padding: 15pt 20pt !important;
+            }
+            
+            .section {
+                margin-bottom: 12pt !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .section h2 {
+                font-size: 16pt !important;
+                color: #2d3748 !important;
+                margin-bottom: 8pt !important;
+                margin-top: 6pt !important;
+                padding-bottom: 4pt !important;
+                border-bottom: 2pt solid #667eea !important;
+                page-break-after: avoid !important;
+                text-align: left !important;
+                font-weight: bold !important;
+            }
+            
+            .section h3 {
+                font-size: 12pt !important;
+                color: #4a5568 !important;
+                margin: 8pt 0 6pt 0 !important;
+                page-break-after: avoid !important;
+                font-weight: bold !important;
+            }
+            
+            .section p {
+                font-size: 11pt !important;
+                line-height: 1.4 !important;
+                color: #4a5568 !important;
+                margin-bottom: 8pt !important;
+                text-align: justify !important;
+            }
+            
+            .highlight-box {
+                background: #f7fafc !important;
+                border-left: 3pt solid #667eea !important;
+                padding: 12pt !important;
+                margin: 10pt 0 !important;
+                page-break-inside: avoid !important;
+                -webkit-print-color-adjust: exact !important;
+                border-radius: 0 6pt 6pt 0 !important;
+            }
+            
+            .highlight-box h3 {
+                font-size: 12pt !important;
+                color: #2d3748 !important;
+                margin-bottom: 6pt !important;
+                font-weight: bold !important;
+            }
+            
+            .highlight-box p {
+                font-size: 10pt !important;
+                line-height: 1.3 !important;
+                color: #4a5568 !important;
+                margin: 0 !important;
+            }
+            
+            .benefits-grid {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr !important;
+                gap: 8pt !important;
+                margin: 8pt 0 !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .benefit-card {
+                background: white !important;
+                border: 1pt solid #e2e8f0 !important;
+                border-radius: 4pt !important;
+                padding: 8pt !important;
+                margin-bottom: 0pt !important;
+                page-break-inside: avoid !important;
+                display: block !important;
+                box-shadow: 0 1pt 2pt rgba(0,0,0,0.1) !important;
+                min-height: 45pt !important;
+            }
+            
+            .benefit-card h4 {
+                font-size: 11pt !important;
+                font-weight: bold !important;
+                color: #667eea !important;
+                margin-bottom: 5pt !important;
+                line-height: 1.3 !important;
+            }
+            
+            .benefit-card p {
+                font-size: 10pt !important;
+                color: #4a5568 !important;
+                margin: 0 !important;
+                line-height: 1.3 !important;
+            }
+            
+            .stats-container {
+                display: grid !important;
+                grid-template-columns: 1fr 1fr 1fr !important;
+                gap: 8pt !important;
+                margin: 8pt 0 !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .stat-card {
+                background: white !important;
+                border: 1pt solid #e2e8f0 !important;
+                border-radius: 4pt !important;
+                padding: 8pt !important;
+                margin-bottom: 0pt !important;
+                text-align: center !important;
+                display: block !important;
+                box-shadow: 0 1pt 2pt rgba(0,0,0,0.1) !important;
+                min-height: 35pt !important;
+            }
+            
+            .stat-number {
+                font-size: 28pt !important;
+                font-weight: bold !important;
+                color: #667eea !important;
+                display: block !important;
+                line-height: 1.2 !important;
+            }
+            
+            .stat-label {
+                font-size: 10pt !important;
+                color: #4a5568 !important;
+                margin-top: 8pt !important;
+                line-height: 1.3 !important;
+            }
+            
+            .tech-stack {
+                display: block !important;
+                margin: 8pt 0 !important;
+                text-align: center !important;
+            }
+            
+            .tech-badge {
+                background: #667eea !important;
+                color: white !important;
+                padding: 4pt 8pt !important;
+                border-radius: 10pt !important;
+                font-size: 9pt !important;
+                font-weight: bold !important;
+                display: inline-block !important;
+                margin: 2pt 4pt 2pt 0 !important;
+                -webkit-print-color-adjust: exact !important;
+            }
+            
+            .footer {
+                background: #2d3748 !important;
+                color: white !important;
+                padding: 25pt !important;
+                text-align: center !important;
+                margin-top: 30pt !important;
+                -webkit-print-color-adjust: exact !important;
+                page-break-inside: avoid !important;
+            }
+            
+            .footer p {
+                color: #a0aec0 !important;
+                margin: 8pt 0 !important;
+                font-size: 11pt !important;
+            }
+            
+            .page-break {
+                page-break-before: always !important;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>AsistoYA</h1>
+            <div class="subtitle">Resumen Ejecutivo</div>
+            <div class="tagline">Revolucionando el Control de Asistencia Escolar mediante Inteligencia Artificial</div>
+        </div>
+        
+        <div class="content">
+            <section class="section">
+                <h2>Propósito y Problema Resuelto</h2>
+                <p>AsistoYA es una plataforma web y móvil innovadora diseñada para automatizar el control de asistencia escolar mediante tecnología de reconocimiento facial avanzada. Nuestra solución ofrece a las instituciones educativas una herramienta moderna, segura y eficiente para gestionar la asistencia estudiantil y mejorar significativamente la comunicación con los padres a través de notificaciones push en tiempo real.</p>
+                
+                <div class="highlight-box">
+                    <h3>Problemáticas Identificadas en República Dominicana</h3>
+                    <p>• <strong>Ansiedad parental:</strong> Preocupación constante por la seguridad y ubicación de los hijos<br>
+                    • <strong>Gestión manual ineficiente:</strong> Procesos tradicionales que consumen tiempo valioso<br>
+                    • <strong>Altos índices de ausentismo:</strong> Falta de seguimiento efectivo de asistencia<br>
+                    • <strong>Comunicación limitada:</strong> Escasa interacción entre instituciones educativas y familias<br>
+                    • <strong>Acceso tecnológico restringido:</strong> Limitadas soluciones accesibles para instituciones</p>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Funcionamiento de la Solución</h2>
+                <p>Nuestro sistema implementa un proceso automatizado y eficiente que revoluciona la manera tradicional de gestionar la asistencia escolar:</p>
+                
+                <h3>Proceso Técnico</h3>
+                <p>Un profesor o personal autorizado utiliza la cámara de cualquier dispositivo estándar (teléfono, tablet o laptop) para escanear los rostros de los estudiantes. La aplicación emplea la biblioteca face-api.js, basada en TensorFlow.js, para identificar localmente al estudiante mediante comparación de rasgos faciales con datos previamente almacenados de forma segura.</p>
+                
+                <p>Al reconocerse exitosamente al estudiante, se genera automáticamente un registro de asistencia en nuestra base de datos Supabase. Mediante Supabase Realtime y Web Push API, se envían notificaciones push instantáneas a los padres o tutores, informándoles sobre la llegada o ausencia de su hijo en tiempo real.</p>
+                
+                <div class="tech-stack">
+                    <span class="tech-badge">TypeScript</span>
+                    <span class="tech-badge">React/Next.js</span>
+                    <span class="tech-badge">Node.js</span>
+                    <span class="tech-badge">Supabase</span>
+                    <span class="tech-badge">TensorFlow.js</span>
+                    <span class="tech-badge">Face-API.js</span>
+                    <span class="tech-badge">Inteligencia Artificial</span>
+                    <span class="tech-badge">PWA</span>
+                </div>
+            </section>
+            
+            <div class="page-break"></div>
+            
+            <section class="section">
+                <h2>Propuesta de Valor y Beneficios Clave</h2>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>👨‍👩‍👧‍👦 Para los Padres</h4>
+                        <p>Notificaciones instantáneas en tiempo real que brindan tranquilidad sobre la asistencia de sus hijos y acceso a reportes visuales que fortalecen su compromiso con la educación.</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <h4>👩‍🏫 Para los Profesores</h4>
+                        <p>Elimina la necesidad de pasar lista manualmente, ahorrando tiempo valioso y permitiendo mayor concentración en la enseñanza. Panel intuitivo para registro y consulta de historiales.</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <h4>👨‍💼 Para Directores y Administradores</h4>
+                        <p>Reportes automáticos detallados (PDF/Excel) que facilitan la toma de decisiones y permiten identificar patrones de ausentismo, optimizando recursos institucionales.</p>
+                    </div>
+                    
+                    <div class="benefit-card">
+                        <h4>🎓 Para Estudiantes</h4>
+                        <p>Registro automático de asistencia y motivación mediante gamificación con puntos o recompensas para fomentar la responsabilidad académica.</p>
+                    </div>
+                </div>
+                
+                <div class="stats-container">
+                    <div class="stat-card">
+                        <span class="stat-number">85%</span>
+                        <div class="stat-label">Reducción en tiempo de gestión de asistencia</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">100%</span>
+                        <div class="stat-label">Automatización del proceso</div>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">24/7</span>
+                        <div class="stat-label">Disponibilidad del sistema</div>
+                    </div>
+                </div>
+                
+                <div class="highlight-box">
+                    <h3>Ventajas Competitivas y Seguridad Infantil</h3>
+                    <p>Solución accesible y económica, especialmente diseñada para escuelas públicas con presupuestos limitados. Funciona con dispositivos estándar sin requerir hardware adicional. Arquitectura completamente basada en la nube con notificaciones push nativas y gratuitas, sin dependencia de servicios de terceros.</p>
+                    
+                    <p><strong>Seguridad Infantil Mejorada:</strong> El registro en tiempo real confirma la ubicación segura de los estudiantes, contribuyendo significativamente a la prevención de casos de niños desaparecidos. Sistema de alerta temprana para ausencias no reportadas que permite respuesta rápida de autoridades y familias, fortaleciendo la protección integral de menores en el ecosistema educativo dominicano.</p>
+                </div>
+            </section>
+            
+            <section class="section">
+                <h2>Mercado Objetivo y Usuarios</h2>
+                <p>AsistoYA se dirige estratégicamente a instituciones educativas públicas y privadas de la República Dominicana, con una visión de expansión hacia toda Latinoamérica. Nuestro enfoque abarca todos los niveles educativos, desde educación inicial hasta nivel universitario.</p>
+                
+                <h3>Segmentos de Usuarios Clave</h3>
+                <p>• <strong>Administradores escolares:</strong> Directores, coordinadores académicos y personal administrativo<br>
+                • <strong>Cuerpo docente:</strong> Profesores y educadores de todos los niveles<br>
+                • <strong>Padres y tutores:</strong> Familias comprometidas con el seguimiento académico<br>
+                • <strong>Estudiantes:</strong> Beneficiarios directos del sistema automatizado<br>
+                • <strong>MINERD:</strong> Segmento institucional estratégico para implementación a gran escala</p>
+                
+                <p>El Ministerio de Educación representa una oportunidad excepcional para el mediano y largo plazo, con capacidad de utilizar datos agregados para el desarrollo de políticas públicas educativas más efectivas.</p>
+            </section>
+            
+            <div class="page-break"></div>
+            
+            <section class="section">
+                <h2>Modelo de Ingresos</h2>
+                <p>Nuestro modelo de negocio se fundamenta en la sostenibilidad y escalabilidad, ofreciendo múltiples opciones de monetización:</p>
+                
+                <h3>Suscripciones y Licenciamiento</h3>
+                <p>Modelo principal basado en suscripciones institucionales con cobros recurrentes (mensuales, trimestrales o anuales). Ofrecemos planes escalables adaptados al tamaño y necesidades específicas de cada institución:</p>
+                
+                <div class="benefits-grid">
+                    <div class="benefit-card">
+                        <h4>🆓 Plan Free</h4>
+                        <p>Funcionalidades básicas para instituciones pequeñas y pruebas piloto</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>📊 Plan Básico</h4>
+                        <p>Herramientas estándar para escuelas medianas</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🌟 Plan Premium</h4>
+                        <p>Funcionalidades avanzadas y reportería completa</p>
+                    </div>
+                    <div class="benefit-card">
+                        <h4>🏢 Plan Institucional</h4>
+                        <p>Soluciones personalizadas para redes educativas</p>
+                    </div>
+                </div>
+                
+                <h3>Servicios Complementarios</h3>
+                <p>• Capacitación personalizada y soporte técnico especializado<br>
+                • Integración con sistemas existentes de gestión educativa<br>
+                • Alianzas estratégicas con organismos gubernamentales<br>
+                • Monetización ética de datos anónimos respetando la privacidad</p>
+            </section>
+            
+            <section class="section">
+                <h2>Impacto y Viabilidad</h2>
+                <p>AsistoYA genera un impacto social y educativo significativo, contribuyendo al desarrollo del sector educativo dominicano y la región:</p>
+                
+                <h3>Impacto Social</h3>
+                <p>• <strong>Reducción de ansiedad parental:</strong> Mayor tranquilidad familiar mediante comunicación efectiva<br>
+                • <strong>Mejora en comunicación familia-escuela:</strong> Fortalecimiento de vínculos educativos<br>
+                • <strong>Fomento de responsabilidad estudiantil:</strong> Desarrollo de hábitos de puntualidad y compromiso<br>
+                • <strong>Reducción de ausentismo y deserción:</strong> Identificación temprana de patrones problemáticos</p>
+                
+                <h3>Impacto Educativo</h3>
+                <p>La solución mejora significativamente la gestión escolar al liberar tiempo valioso del personal educativo, permitiendo mayor enfoque en actividades pedagógicas. Proporciona datos valiosos para la toma de decisiones informadas sobre políticas educativas institucionales.</p>
+                
+                <h3>Viabilidad Técnica y Económica</h3>
+                <p>AsistoYA democratiza el acceso a tecnología avanzada sin necesidad de hardware costoso, siendo técnicamente viable y escalable. Cuenta con validación positiva de usuarios clave y testimonios que respaldan su efectividad. La solución genera oportunidades de empleo en sectores tecnológicos y de soporte, contribuyendo al desarrollo económico local.</p>
+            </section>
+            
+            
+            <section class="section">
+                <h2>Criterios MESCyT - Evaluación Competitiva</h2>
+                
+                <h3>Equipo Emprendedor y Viabilidad</h3>
+                <p>• <strong>Enmanuel Reynoso</strong> (Ingeniería en Software): Desarrollo y arquitectura técnica de la plataforma<br>
+                • <strong>Genesis Brito Guzmán</strong> (Derecho): Marco normativo y protección de datos personales<br>
+                • <strong>Franchesca Pérez</strong> (Psicología Educativa): Enfoque pedagógico y dinámicas escolares</p>
+                
+                <p>Equipo multidisciplinario con respaldo institucional académico dominicano.</p>
+                
+                <h3>Innovación y Diferenciación Tecnológica</h3>
+                <p>Primera solución dominicana de reconocimiento facial educativo sin contacto, arquitectura 100% web sin hardware adicional, notificaciones push nativas sin dependencias externas, gamificación educativa integrada. Diferenciación clave: accesibilidad económica para escuelas públicas.</p>
+                
+                <h3>Impacto y Creación de Empleos</h3>
+                <p><strong>Impacto Social:</strong> Reducción del ausentismo escolar, fortalecimiento vínculos familia-escuela, democratización tecnológica educativa, generación de datos para políticas públicas.<br>
+                <strong>Empleos Directos:</strong> 15-25 posiciones en desarrollo, soporte, ventas y administración. <strong>Empleos Indirectos:</strong> Capacitadores, integradores, consultores educativos.</p>
+                
+                <h3>Análisis Competitivo y Posicionamiento</h3>
+                <p>Competencia directa limitada en RD: sistemas biométricos costosos (hardware $2K+/institución) vs AsistoYA ($50-200/mes). Ventaja diferencial: accesibilidad económica, implementación sin hardware, enfoque específico educativo vs soluciones genéricas empresariales.</p>
+                
+                <h3>Impacto Ambiental y Gestión de Riesgos</h3>
+                <p><strong>Impacto Ambiental:</strong> Reducción 80% uso papel (listas físicas), arquitectura cloud eficiente energéticamente. <strong>Riesgos Mitigados:</strong> Dependencia cloud (multi-proveedor), resistencia adopción (capacitación gradual), escalabilidad (infraestructura elástica), privacidad datos (cumplimiento GDPR/normativas locales).</p>
+                
+                <h3>Escalabilidad y Mercado</h3>
+                <p>Mercado inicial: 8,000+ instituciones educativas en RD. Proyección 3 años: 2,000 instituciones activas, 300,000+ usuarios conectados. Potencial de expansión: Latinoamérica (50,000+ instituciones regionales). Modelo escalable con costos marginales decrecientes.</p>
+            </section>
+        </div>
+        
+    </div>
+</body>
+</html>
