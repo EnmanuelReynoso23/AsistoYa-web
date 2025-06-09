@@ -23,3 +23,12 @@ dist-ssr
 *.sln
 *.sw?
 .env
+
+# Vercel
+.vercel
+.vercel.json
+*.vercel.app
+
+# Build outputs
+out/
+build/
